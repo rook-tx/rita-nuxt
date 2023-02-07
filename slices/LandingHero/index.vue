@@ -15,12 +15,12 @@
 
 <script>
 
-import { getSliceComponentProps } from '@prismicio/vue';
-import { mapState } from 'pinia';
-import { useDeviceStore } from '~~/stores/device';
+import { getSliceComponentProps } from '@prismicio/vue'
+import { mapState } from 'pinia'
+import { useDeviceStore } from '~~/stores/device'
 
 export default {
-  
+
   props: {
     ...getSliceComponentProps([ 'slice', 'index' ]),
 
@@ -59,7 +59,7 @@ export default {
       // minusY: -window.innerHeight * 0.2,
       minusY: -100,
       inview: true
-    };
+    }
   },
 
   computed: {
@@ -69,26 +69,26 @@ export default {
     ]),
 
     plax() {
-      return this.lastScroll / this.travel;
+      return this.lastScroll / this.travel
     },
 
     invertFactor() {
-      return Math.min(1, this.plax);
+      return Math.min(1, this.plax)
     },
 
     factor() {
-      return 1 - (1 - this.delta) * this.invertFactor;
+      return 1 - (1 - this.delta) * this.invertFactor
     },
 
     yFactor() {
-      return this.minusY + this.deltaY * this.invertFactor;
+      return this.minusY + this.deltaY * this.invertFactor
     }
   },
 
   watch: {
     win: {
       handler() {
-        this.$nextTick(this.updateDims);
+        this.$nextTick(this.updateDims)
       }
     },
 
@@ -99,9 +99,9 @@ export default {
           this.src = data.image && data.image.url && this.mobile ?
             data.image.Mobile.url :
             data.image && data.image.url && !this.mobile ?
-              data.image.url : this.src;
+              data.image.url : this.src
           this.obj = this.mobile ?
-            data.image.Mobile : data.image;
+            data.image.Mobile : data.image
         }
       }
     },
@@ -109,9 +109,9 @@ export default {
     invertFactor: {
       handler(factor, oldFactor) {
         if (factor === 1) {
-          this.$root.$emit('showLogo');
+          this.$root.$emit('showLogo')
         } else if (oldFactor === 1 && factor < 1) {
-          this.$root.$emit('hideLogo');
+          this.$root.$emit('hideLogo')
         }
       }
     },
@@ -119,7 +119,7 @@ export default {
     scroll: {
       immediate: true,
       handler(e) {
-        this.onscroll(e);
+        this.onscroll(e)
       }
     }
   },
@@ -128,37 +128,39 @@ export default {
     // this.$root.$on('logoDim', this.updateLogoDims);
     // this.$root.$emit('hideLogo');
 
-    setTimeout(this.updateDims, 600);
-    setTimeout(this.updateDims, 1200);
+    setTimeout(this.updateDims, 600)
+    setTimeout(this.updateDims, 1200)
   },
 
-  beforeDestroy() {
+  beforeUnmount() {
     // this.$root.$off('logoDim', this.updateLogoDims);
     // this.$root.$emit('showLogo');
   },
 
   methods: {
     updateLogoDims(e) {
-      this.logoY = e.y;
-      this.logoX = e.x;
-      this.updateDims();
+      this.logoY = e.y
+      this.logoX = e.x
+      this.updateDims()
     },
 
     updateDims() {
-      this.elHeight = this.$el.clientHeight;
-      this.travel = this.elHeight;
-      this.delta = this.logoX / this.$refs.lockup.$el.clientWidth;
-      this.minusY = this.$refs.lockup.$el.clientHeight / -2;
-      this.deltaY = this.logoY + this.elHeight / 2;
+      if (this.$el && this.$refs.lockup) {
+        this.elHeight = this.$el.clientHeight
+        this.travel = this.elHeight
+        this.delta = this.logoX / this.$refs.lockup.$el.clientWidth
+        this.minusY = this.$refs.lockup.$el.clientHeight / -2
+        this.deltaY = this.logoY + this.elHeight / 2
+      }
     },
 
     onscroll(e) {
-      this.inview = e < this.elHeight * 1.1;
+      this.inview = e < this.elHeight * 1.1
 
       if (this.inview) {
-        this.lastScroll = e;
+        this.lastScroll = e
       } else {
-        this.lastScroll = this.travel;
+        this.lastScroll = this.travel
       }
     }
 
@@ -175,7 +177,7 @@ export default {
     // }
   }
 
-};
+}
 
 </script>
 

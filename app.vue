@@ -1,10 +1,10 @@
 <template>
-  <Sniffer />
+  <app-sniffer />
   <div class="page">
-    <SectionsHeader/>
-    <!-- <NuxtLayout> -->
-    <NuxtPage></NuxtPage>
-    <!-- </NuxtLayout> -->
+    <app-header />
+    <NuxtLayout>
+      <NuxtPage />
+    </NuxtLayout>
   </div>
 </template>
 

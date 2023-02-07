@@ -5,7 +5,7 @@
 <script>
 
 import { mapActions } from 'pinia'
-import { useDeviceStore } from '../stores/device'
+import { useDeviceStore } from '@/stores/device'
 
 export default {
 

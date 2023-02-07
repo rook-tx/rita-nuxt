@@ -1,11 +1,13 @@
 <template>
-  <div :class="[
-    'banner-image',
+  <div
+    :class="[
+      'banner-image',
       {
         'headline-center': layout && layout === 'centre'
       }
-  ]">
-    <ModulesPlaxImage 
+    ]"
+  >
+    <ModulesPlaxImage
       :img-obj="slice.primary.image"
     />
 
@@ -30,9 +32,9 @@
 
 <script>
 
-import { getSliceComponentProps } from '@prismicio/vue';
-import { mapState } from 'pinia';
-import { useDeviceStore } from '~~/stores/device';
+import { getSliceComponentProps } from '@prismicio/vue'
+import { mapState } from 'pinia'
+import { useDeviceStore } from '~~/stores/device'
 
 export default {
   props: {
@@ -43,7 +45,7 @@ export default {
     return {
       scale: 2,
       padding: 50
-    };
+    }
   },
 
   computed: {
@@ -54,11 +56,11 @@ export default {
     layout() {
       return this.slice?.primary?.layout?.toLowerCase()
     },
-    
+
     wordmark() {
       return this.slice?.primary?.wordmark?.url
     },
-    
+
     headline() {
       return this.$prismic.asText(this.slice.primary.headline)
     }
@@ -68,7 +70,7 @@ export default {
     winWidth: {
       immediate: true,
       handler() {
-        this.updateScale();
+        this.updateScale()
       }
     }
   },
@@ -78,12 +80,12 @@ export default {
     updateScale() {
       this.scale = this.$refs.headline ?
         (this.win.x - (this.win.x < 768 ? 40 : 80)) / this.$refs.headline.clientWidth
-        : 2;
+        : 2
       this.padding = this.$refs.scaleImage ?
         this.$refs.scaleImage.clientHeight / 2 :
         this.$refs.scaleHeadline ?
           this.$refs.scaleHeadline.clientHeight * this.scale / 2
-          : 50;
+          : 50
     }
   }
 }

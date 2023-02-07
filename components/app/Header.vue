@@ -123,10 +123,10 @@
 
 <script>
 
-import { mapState } from 'pinia';
-import { useShopifyStore } from '~~/stores/shopify';
+import { mapState } from 'pinia'
+import { useShopifyStore } from '~~/stores/shopify'
 
-import header from '../mixins/header';
+import header from '../mixins/header'
 
 export default {
 
@@ -148,29 +148,29 @@ export default {
         route: l.page.uid,
         name: l.name,
         section: l.section
-      }));
+      }))
 
-      const mapLinks = [];
-      let mapIdx = -1;
+      const mapLinks = []
+      let mapIdx = -1
 
       for (let l of prisLinks) {
         if (!l.head) {
-          mapIdx++;
+          mapIdx++
           l = {
             name: l.name,
             route: l.route,
             sub: []
-          };
-          mapLinks.push(l);
+          }
+          mapLinks.push(l)
         } else {
           mapLinks[mapIdx].sub.push({
             name: l.name,
             route: l.route + (l.section ? `#${l.section.replace(/\s/g, '-').toLowerCase()}` : '')
-          });
+          })
         }
       }
 
-      return mapLinks;
+      return mapLinks
 
     },
 
@@ -179,14 +179,14 @@ export default {
       if (route && route === this.$route.params.slug) {
         // this.$emit('topScroll');
       } else if (!route && this.$route.name === 'home') {
-        this.$emit('topScroll');
+        this.$emit('topScroll')
       }
 
-      this.toggleCart(false);
+      this.toggleCart(false)
 
     }
   }
-};
+}
 
 </script>
 

@@ -12,10 +12,11 @@
                     :key="idx"
                     :class="[ 'link' , link.class ? link.class : null ]"
                   >
-                    <router-link
+                    <nuxt-link
                       :to="link.route"
-                      v-html="link.name"
-                    />
+                    >
+                      {{ link.name }}
+                    </nuxt-link>
                   </li>
                 </ul>
               </div>
@@ -27,10 +28,11 @@
                     :key="idx"
                     :class="[ 'link' , link.class ? link.class : null ]"
                   >
-                    <router-link
+                    <nuxt-link
                       :to="link.route"
-                      v-html="link.name"
-                    />
+                    >
+                      {{ link.name }}
+                    </nuxt-link>
                   </li>
                 </ul>
               </div>
@@ -44,8 +46,8 @@
                   >
                     <a
                       :href="link.route"
-                      v-html="link.name"
-                    />
+                    >{{ link.name }}
+                    </a>
                   </li>
                 </ul>
               </div>
@@ -57,18 +59,19 @@
                     :key="idx"
                     :class="[ 'link' , link.class ? link.class : null ]"
                   >
-                    <router-link
+                    <nuxt-link
                       v-if="idx === 0"
                       :to="link.route"
-                      v-html="link.name"
-                    />
+                    >
+                      {{ link.name }}
+                    </nuxt-link>
+
                     <a
                       v-else
                       target="_blank"
                       rel="noopener"
                       :href="link.route"
-                      v-html="link.name"
-                    />
+                    >{{ link.name }}</a>
                   </li>
                 </ul>
               </div>
@@ -86,21 +89,21 @@
 
           <div class="terms">
             <div class="body2">
-              <router-link
+              <nuxt-link
                 to="/shipping"
               >
                 Shipping Policy
-              </router-link>
-              <router-link
+              </nuxt-link>
+              <nuxt-link
                 to="/terms"
               >
                 Terms &amp; Conditions
-              </router-link>
-              <router-link
+              </nuxt-link>
+              <nuxt-link
                 to="/privacy"
               >
                 Privacy Policy
-              </router-link>
+              </nuxt-link>
             </div>
           </div>
         </div>
@@ -174,40 +177,36 @@
 
         <div class="terms">
           <div class="body2">
-            <router-link
+            <nuxt-link
               to="/shipping"
             >
               Shipping Policy
-            </router-link> | <router-link
+            </nuxt-link> | <nuxt-link
               to="/terms"
             >
               Terms &amp; Conditions
-            </router-link> | <router-link
+            </nuxt-link> | <nuxt-link
               to="/privacy"
             >
               Privacy Policy
-            </router-link>
+            </nuxt-link>
           </div>
         </div>
       </div>
 
       <div class="headline">
-        <wordmark />
+        <svg-wordmark />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 
-import Wordmark from '../svg/Wordmark.vue';
+import { mapState } from 'pinia'
+import { useDeviceStore } from '~~/stores/device'
 
 export default {
-
-  components: {
-    Wordmark
-  },
 
   data() {
     const collectionLinks = [
@@ -232,7 +231,7 @@ export default {
         route: '/about#bespoke',
         name: 'Bespoke'
       }
-    ];
+    ]
 
     const exploreLinks = [
       {
@@ -246,7 +245,7 @@ export default {
       },
       {
         route: '/the-feature',
-        name: 'News &amp; Events'
+        name: 'News & Events'
       },
       {
         route: '/find-store',
@@ -256,7 +255,7 @@ export default {
         route: '/find-store#trunk-shows',
         name: 'Trunk Shows'
       }
-    ];
+    ]
 
     const helpLinks = [
       {
@@ -272,7 +271,7 @@ export default {
         route: 'mailto:concierge@ritavinieris.com',
         name: 'concierge@ritavinieris.com'
       }
-    ];
+    ]
 
     const followLinks = [
       {
@@ -292,7 +291,7 @@ export default {
         route: 'https://www.facebook.com/ritavineris/',
         name: 'Facebook'
       }
-    ];
+    ]
 
     return {
       collectionLinks,
@@ -300,16 +299,16 @@ export default {
       helpLinks,
       followLinks,
       email: null
-    };
+    }
   },
 
   computed: {
-    ...mapGetters([
+    ...mapState(useDeviceStore, [
       'mobile'
     ])
   }
 
-};
+}
 
 </script>
 
@@ -369,7 +368,7 @@ export default {
       white-space nowrap
     }
 
-    .router-link-exact-active {
+    .nuxt-link-exact-active {
       &::after {
         transform scaleX(1)
       }
@@ -397,7 +396,7 @@ export default {
     line-height (30 / 14)
     margin-bottom (5 / 14em)
 
-    .router-link-exact-active {
+    .nuxt-link-exact-active {
       &::after {
         transform scaleX(0)
       }
@@ -638,7 +637,6 @@ export default {
     // min-width:90px
   }
 
-
   #mc_embed_signup div#mce-responses {
     float:left
     top:-1.4em
@@ -676,7 +674,6 @@ export default {
     text-align:left
     padding:.5em 0
   }
-
 
   #mc_embed_signup {
     // background:#fff;

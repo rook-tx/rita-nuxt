@@ -1,16 +1,17 @@
 <script setup>
-import {components} from '../slices/index'
+import { components } from '../slices/index'
+// eslint-disable-next-line no-undef
 const { client } = usePrismic()
-const uid = useRoute().params.uid ? String(useRoute().params.uid) : 'home';
-console.log(uid)
-const { data: page } = await useAsyncData('page', () => client.getByUID('page', uid))
+// eslint-disable-next-line no-undef
+const { data: page } = await useLazyAsyncData('home', () => client.getByUID('page', 'home'))
 </script>
 
 <template>
   <div class="main">
-    <SliceZone 
+    <SliceZone
       v-if="page?.data"
       :slices="page.data.body"
-      :components="components" />
+      :components="components"
+    />
   </div>
 </template>

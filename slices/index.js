@@ -1,24 +1,36 @@
+import BannerImage from './BannerImage'
+import BannerImageCopy from './BannerImageCopy'
+import BasicCopy from './BasicCopy'
+import BasicHero from './BasicHero'
+import GalleryArray from './GalleryArray'
+import GalleryIndex from './GalleryIndex'
+import ImageIndex from './ImageIndex'
+import ImageWall from './ImageWall'
 import LandingHero from './LandingHero'
 import LargeImageArray from './LargeImageArray'
-import BannerImage from './BannerImage'
-import GalleryArray from './GalleryArray'
-import ImageWall from './ImageWall'
-import BannerImageCopy from './BannerImageCopy'
 
 export {
+  BannerImage,
+  BannerImageCopy,
+  BasicCopy,
+  BasicHero,
+  GalleryArray,
+  GalleryIndex,
+  ImageIndex,
+  ImageWall,
   LandingHero,
   LargeImageArray,
-  BannerImage,
-  GalleryArray,
-  ImageWall,
-  BannerImageCopy
 }
 
 export const components = {
+  banner_image: BannerImage,
+  banner_image_copy: BannerImageCopy,
+  basic_copy: BasicCopy,
+  basic_hero: BasicHero,
+  gallery_array: GalleryArray,
+  gallery_index: GalleryIndex,
+  image_index: ImageIndex,
+  image_wall: ImageWall,
   landing_hero: LandingHero,
   large_image_array: LargeImageArray,
-  banner_image: BannerImage,
-  gallery_array: GalleryArray,
-  image_wall: ImageWall,
-  banner_image_copy: BannerImageCopy
 }
