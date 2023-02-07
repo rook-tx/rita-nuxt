@@ -30,9 +30,10 @@
               <nuxt-link
                 :to="link.route"
                 class="drop-head"
-                @click.left.native="navClick(link.route)"
-                v-html="link.name"
-              />
+                @click.left="navClick(link.route)"
+              >
+                {{ link.name }}
+              </nuxt-link>
               <div
                 v-if="link.sub"
                 class="drop"
@@ -44,9 +45,10 @@
                   >
                     <nuxt-link
                       :to="sublink.route"
-                      @click.left.native="navClick(sublink.route)"
-                      v-html="sublink.name"
-                    />
+                      @click.left="navClick(sublink.route)"
+                    >
+                      {{ sublink.name }}
+                    </nuxt-link>
                   </li>
                 </ul>
               </div>
@@ -60,7 +62,7 @@
               <nuxt-link
                 to="/"
                 title="Home"
-                @click.left.native="navClick()"
+                @click.left="navClick()"
               >
                 <lockup
                   ref="lockup"
@@ -89,9 +91,10 @@
               <nuxt-link
                 :to="link.route"
                 class="drop-head"
-                @click.left.native="navClick(link.route)"
-                v-html="link.name"
-              />
+                @click.left="navClick(link.route)"
+              >
+                {{ link.name }}
+              </nuxt-link>
               <div
                 v-if="link.sub"
                 class="drop"
@@ -103,9 +106,10 @@
                   >
                     <nuxt-link
                       :to="sublink.route"
-                      @click.left.native="navClick(sublink.route)"
-                      v-html="sublink.name"
-                    />
+                      @click.left="navClick(sublink.route)"
+                    >
+                      {{ sublink.name }}
+                    </nuxt-link>
                   </li>
                 </ul>
               </div>

@@ -1,6 +1,6 @@
 <template>
   <app-sniffer />
-  <div class="page">
+  <div class="app">
     <app-header />
     <NuxtLayout>
       <NuxtPage />
@@ -11,5 +11,9 @@
 <style lang="stylus">
 
 @import "./assets/stylus/main"
+
+.app {
+  height 100%
+}
 
 </style>

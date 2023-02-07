@@ -1,9 +1,9 @@
-import { mapActions, mapState } from 'pinia';
-import { useDeviceStore } from '../../stores/device';
-import { useUiStore } from '../../stores/ui';
+import { mapActions, mapState } from 'pinia'
+import { useDeviceStore } from '../../stores/device'
+import { useUiStore } from '../../stores/ui'
 
-import Close from '../svg/Close.vue';
-import Plus from '../svg/Plus.vue';
+import Close from '../svg/Close.vue'
+import Plus from '../svg/Plus.vue'
 
 export default {
 
@@ -39,7 +39,7 @@ export default {
 
       showBack: false,
       showPag: false
-    };
+    }
   },
 
   computed: {
@@ -48,28 +48,28 @@ export default {
     ]),
 
     winar() {
-      return this.win.x / this.win.y;
+      return this.win.x / this.win.y
     },
 
     mobile() {
-      return this.win.x < 768;
+      return this.win.x < 768
     }
   },
 
   watch: {
     win: {
       handler() {
-        this.getContentAr();
+        this.getContentAr()
       }
     }
   },
 
   mounted() {
-    window.addEventListener('keyup', this.keyup, { passive: true });
+    window.addEventListener('keyup', this.keyup, { passive: true })
   },
 
   beforeDestroy() {
-    window.removeEventListener('keyup', this.keyup, { passive: true });
+    window.removeEventListener('keyup', this.keyup, { passive: true })
   },
 
   methods: {
@@ -81,12 +81,12 @@ export default {
 
       if (this.images[idx]) {
         if (!this.images[idx].ar) {
-          this.images[idx].ar = e.target.clientWidth / e.target.clientHeight;
+          this.images[idx].ar = e.target.clientWidth / e.target.clientHeight
         }
-        this.images[idx].show = true;
+        this.images[idx].show = true
       }
 
-      this.getContentAr();
+      this.getContentAr()
 
     },
 
@@ -95,8 +95,8 @@ export default {
       if (this.$refs.im?.length && this.contentArs.length) {
 
         this.$refs.im.forEach((im, idx) => {
-          this.contentArs[idx] = im.clientWidth / im.clientHeight;
-        });
+          this.contentArs[idx] = im.clientWidth / im.clientHeight
+        })
       }
 
     },
@@ -105,74 +105,74 @@ export default {
       switch (e.which) {
       case 37:
       case 48:
-        this.prev();
-        break;
+        this.prev()
+        break
       case 39:
       case 40:
-        this.next();
-        break;
+        this.next()
+        break
       case 27:
         if (this.expanded) {
-          this.collapseImage();
+          this.collapseImage()
         } else {
-          this.closeGallery();
+          this.closeGallery()
         }
-        break;
-      default: break;
+        break
+      default: break
       }
     },
 
     prev() {
       if (this.displayIdx < 1) {
-        this.prevSet();
-        return;
+        this.prevSet()
+        return
       }
-      this.displayIdx--;
+      this.displayIdx--
     },
 
     next() {
       if (this.displayIdx + 2 > this.images.length) {
-        this.nextSet();
-        return;
+        this.nextSet()
+        return
       }
-      this.displayIdx++;
+      this.displayIdx++
     },
 
     openGallery() {
-      this.open = true;
+      this.open = true
     },
 
     closeGallery() {
-      this.$emit('closeGallery');
-      this.open = false;
+      this.$emit('closeGallery')
+      this.open = false
     },
 
     prevSet() {
-      this.$emit('prevSet');
+      this.$emit('prevSet')
     },
 
     nextSet() {
-      this.$emit('nextSet');
+      this.$emit('nextSet')
     },
 
     onIms() {
-      this.showBack = false;
-      this.showPag = true;
+      this.showBack = false
+      this.showPag = true
     },
 
     offIms() {
       if (this.displayIdx > 0) {
-        this.showPag = false;
+        this.showPag = false
       }
     },
 
     onBack() {
-      this.showBack = true;
-      this.showPag = false;
+      this.showBack = true
+      this.showPag = false
     },
 
     offBack() {
-      this.showBack = false;
+      this.showBack = false
     }
   }
-};
+}

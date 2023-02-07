@@ -42,7 +42,7 @@
 <script>
 
 import { mapState } from 'pinia'
-import { useDeviceStore } from '~~/stores/device';
+import { useDeviceStore } from '~~/stores/device'
 
 export default {
 
@@ -103,7 +103,7 @@ export default {
       delta: 0.5,
       // showAlt: false,
       dimQuery: null
-    };
+    }
   },
 
   computed: {
@@ -120,20 +120,20 @@ export default {
     // ]),
 
     inplax() {
-      return (this.delta - 0.5) * (this.mobile ? 12 : 18);
+      return (this.delta - 0.5) * (this.mobile ? 12 : 18)
     }
   },
 
   watch: {
     pTop: {
       handler() {
-        this.updateDims();
+        this.updateDims()
       }
     },
 
     inview: {
       handler() {
-        this.updateDims();
+        this.updateDims()
       }
     },
 
@@ -146,11 +146,11 @@ export default {
     dimQuery: {
       handler() {
         if (this.src) {
-          this.uncompressSrc = this.uncompress(this.src);
+          this.uncompressSrc = this.uncompress(this.src)
         }
 
         if (this.alt) {
-          this.uncompressAlt = this.uncompress(this.alt);
+          this.uncompressAlt = this.uncompress(this.alt)
         }
       }
     },
@@ -159,7 +159,7 @@ export default {
       immediate: true,
       handler(obj) {
         if (obj && obj.dimensions) {
-          this.ar = obj.dimensions.height / obj.dimensions.width;
+          this.ar = obj.dimensions.height / obj.dimensions.width
         }
       }
     }
@@ -167,53 +167,53 @@ export default {
 
   methods: {
     uncompress(src) {
-      const compsrc = src.replace('auto=compress,format', 'auto=compress,format&q=70&cs=srgb');
-      const qidx = compsrc.indexOf('&w=');
+      const compsrc = src.replace('auto=compress,format', 'auto=compress,format&q=70&cs=srgb')
+      const qidx = compsrc.indexOf('&w=')
       if (this.dimQuery && qidx > 0) {
-        return compsrc.substring(0, qidx) + this.dimQuery + (this.nanoIm && this.nano ? '&dpr=2' : '');
+        return compsrc.substring(0, qidx) + this.dimQuery + (this.nanoIm && this.nano ? '&dpr=2' : '')
       }
-      return compsrc;
+      return compsrc
     },
 
     updateDims() {
 
       this.elTop =
         (this.parent ? this.$el.parentNode.offsetTop + this.$el.offsetParent.offsetTop : this.$el.offsetTop)
-        + this.pTop;
-      this.top = this.elTop - this.winHeight / 4;
-      this.elHeight = this.$el.clientHeight;
-      this.elEnd = this.elTop + this.elHeight + this.winHeight;
-      this.bottom = this.elEnd + this.winHeight / 3;
+        + this.pTop
+      this.top = this.elTop - this.winHeight / 4
+      this.elHeight = this.$el.clientHeight
+      this.elEnd = this.elTop + this.elHeight + this.winHeight
+      this.bottom = this.elEnd + this.winHeight / 3
 
       this.scale = (this.mobile ? 1 : 1.02) +
-        Math.max(0, (this.winHeight - this.elHeight) / this.winHeight * 20 / 100);
+        Math.max(0, (this.winHeight - this.elHeight) / this.winHeight * 20 / 100)
 
-      this.travel = this.winHeight + this.elHeight;
+      this.travel = this.winHeight + this.elHeight
 
       if (this.$refs.im && this.$refs.im.clientWidth > 0) {
-        this.dimQuery = `&w=${Math.round(this.$refs.im.clientWidth * this.scale)}`;
-        this.nanoIm = this.$refs.im.clientWidth < this.winWidth / 2;
+        this.dimQuery = `&w=${Math.round(this.$refs.im.clientWidth * this.scale)}`
+        this.nanoIm = this.$refs.im.clientWidth < this.winWidth / 2
       }
 
-      this.$nextTick(this.diffScroll(this.scroll));
+      this.$nextTick(this.diffScroll(this.scroll))
 
     },
 
     diffScroll(scroll) {
-      this.rinview = this.top < scroll && this.bottom > scroll;
+      this.rinview = this.top < scroll && this.bottom > scroll
 
       if (this.rinview) {
-        this.delta = (scroll - this.elTop) / this.travel;
+        this.delta = (scroll - this.elTop) / this.travel
       }
     },
 
     onload(e) {
-      this.ar = e.target.naturalHeight / e.target.naturalWidth;
-      this.ready = true;
+      this.ar = e.target.naturalHeight / e.target.naturalWidth
+      this.ready = true
     }
   }
 
-};
+}
 
 </script>
 

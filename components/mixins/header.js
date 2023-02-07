@@ -1,10 +1,10 @@
-import { mapState, mapActions } from 'pinia';
-import { useDeviceStore } from '~~/stores/device';
-import { useSearchStore } from '~~/stores/search';
-import { useShopifyStore } from '~~/stores/shopify';
+import { mapState, mapActions } from 'pinia'
+import { useDeviceStore } from '~~/stores/device'
+import { useSearchStore } from '~~/stores/search'
+import { useShopifyStore } from '~~/stores/shopify'
 
-import Lockup from '../svg/Lockup.vue';
-import CartIcon from '../ui/CartIcon.vue';
+import Lockup from '../svg/Lockup.vue'
+import CartIcon from '../ui/CartIcon.vue'
 import SearchBar from '../modules/SearchBar.vue'
 
 export default {
@@ -27,7 +27,7 @@ export default {
       navLinks: [],
       contactLinks: [],
       show: true
-    };
+    }
   },
 
   computed: {
@@ -42,7 +42,7 @@ export default {
     ]),
 
     showStoreNoti() {
-      return this.$route.name === 'veils' && this.top && !this.cartOpen;
+      return this.$route.name === 'veils' && this.top && !this.cartOpen
     }
   },
 
@@ -50,7 +50,7 @@ export default {
     win: {
       immediate: true,
       handler() {
-        this.$nextTick(this.logoDims);
+        this.$nextTick(this.logoDims)
       }
     }
   },
@@ -58,10 +58,10 @@ export default {
   created() {
     this.$prismic.client.getByType('menu').then((res) => {
 
-      this.navLinks = this.mapPris(res.results[0].data.nav_links);
-      this.contactLinks = this.mapPris(res.results[0].data.contact_links);
+      this.navLinks = this.mapPris(res.results[0].data.nav_links)
+      this.contactLinks = this.mapPris(res.results[0].data.contact_links)
 
-    });
+    })
   },
 
   mounted() {
@@ -83,8 +83,8 @@ export default {
     ]),
 
     hideLogo() {
-      this.show = false;
-      this.logoDims();
+      this.show = false
+      this.logoDims()
     },
 
     logoDims() {
@@ -102,14 +102,14 @@ export default {
         route: l.page.uid,
         name: l.name,
         section: l.section
-      }));
+      }))
 
-      const mapLinks = [];
-      let mapIdx = -1;
+      const mapLinks = []
+      let mapIdx = -1
 
       for (let l of prisLinks) {
         if (!l.head) {
-          mapIdx++;
+          mapIdx++
           l = l.route === 'alyne' || l.route === 'rivini' ? {
             name: l.name,
             route: l.route,
@@ -123,20 +123,20 @@ export default {
           } : {
             name: l.name,
             route: l.route
-          };
-          mapLinks.push(l);
+          }
+          mapLinks.push(l)
         } else
         if (mapLinks[mapIdx].sub) {
           mapLinks[mapIdx].sub.push({
             name: l.name,
             route: l.route + (l.section ? `#${l.section.replace(/\s/g, '-').toLowerCase()}` : '')
-          });
+          })
         }
       }
 
-      return mapLinks;
+      return mapLinks
 
     }
   }
 
-};
+}

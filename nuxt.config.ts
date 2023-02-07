@@ -37,15 +37,10 @@ export default defineNuxtConfig({
     '@nuxtjs/prismic',
     '@pinia/nuxt',
   ],
+
   prismic: {
     endpoint: 'rita-vinieris',
     preview: false,
     toolbar: false
   },
-  // vue: {
-  //    config: {
-  //      productionTip: false,
-  //      devtools: true
-  //    }
-  //  }
 })

@@ -1,9 +1,32 @@
+<script setup>
+import { asText, isFilled } from '@prismicio/helpers'
+import { getSliceComponentProps } from '@prismicio/vue'
+
+defineProps({
+  ...getSliceComponentProps([ 'slice' ])
+})
+
+const galleryIdx = 0
+const zooming = -1
+const galleries = []
+// const images = []
+
+function openGallery(idx, e) {
+  const top = e.target.offsetTop + this.$el.offsetTop - this.scroll
+
+  this.galleryIdx = idx
+  this.zooming = idx
+  this.$nextTick(this.$refs.overlay.setScale(e, top))
+}
+
+</script>
+
 <template>
   <div class="gallery-index">
     <div class="wrap">
       <div
-        v-for="(im, idx) in images"
-        :id="$prismic.richTextAsPlain(im.caption)"
+        v-for="(im, idx) in slice.items"
+        :id="asText(im.caption)"
         :key="idx"
         :class="[ 'image', { zooming: zooming === idx }]"
       >
@@ -13,13 +36,13 @@
             title="Open image gallery"
             @click.left="openGallery(idx, $event)"
           >
+            <!-- :src="im.src"
+          :alt="im.alt"
+          :scroll="scroll"
+          :inview="inview"
+          :p-top="elTop" -->
             <modules-plax-image
-              :src="im.src"
-              :alt="im.alt"
-              :scroll="scroll"
-              :inview="inview"
-              :p-top="elTop"
-              :img-obj="im.obj"
+              :img-obj="im.image"
             />
           </button>
 
@@ -33,16 +56,16 @@
     </div>
 
     <gallery-video
-      v-if="data && data.video_src && data.video_src.url"
-      :data="data"
-      :scroll="scroll"
+      v-if="isFilled.link(slice.primary.video_src)"
+      :data="slice.primary"
     />
+    <!-- :scroll="scroll" -->
 
     <div
-      v-if="copy && copy.length > 0"
+      v-if="isFilled.richText(slice.primary.copy)"
       class="copy"
     >
-      <prismic-rich-text :field="copy" />
+      <prismic-rich-text :field="slice.primary.copy" />
     </div>
 
     <modules-zoom-overlay
@@ -55,28 +78,12 @@
   </div>
 </template>
 
-<script>
+<!-- <script>
 
-import { mapActions } from 'pinia';
-import { useUiStore } from '~~/stores/ui';
-
-// import cmsProps from '../mixins/cms-props.js';
-// import parallax from '../mixins/parallax.js';
-
-// import GalleryVideo from '../sections/GalleryVideo.vue';
-// import ZoomOverlay from '../modules/ZoomOverlay.vue';
+import { mapActions } from 'pinia'
+import { useUiStore } from '~~/stores/ui'
 
 export default {
-
-  // components: {
-  //   GalleryVideo,
-  //   ZoomOverlay
-  // },
-
-  // mixins: [
-  //   cmsProps,
-  //   parallax
-  // ],
 
   data() {
     return {
@@ -84,7 +91,7 @@ export default {
       zooming: -1,
       galleries: [],
       images: []
-    };
+    }
   },
 
   watch: {
@@ -100,10 +107,10 @@ export default {
               caption: item.caption && item.caption.length ?
                 item.caption : null,
               obj: this.mobile ? item.image.Mobile : item.image
-            };
-          });
+            }
+          })
 
-          this.galleries = this.extractGalleries(items);
+          this.galleries = this.extractGalleries(items)
         }
 
       }
@@ -112,7 +119,7 @@ export default {
 
   mounted() {
     if (this.$route?.hash) {
-      setTimeout(this.findDress(this.$route.hash), 650);
+      setTimeout(this.findDress(this.$route.hash), 650)
     }
   },
 
@@ -123,31 +130,31 @@ export default {
 
     extractGalleries(items) {
 
-      const galleries = [];
+      const galleries = []
 
       items.forEach((item, idx) => {
 
         const images = [
           item.image.url
-        ];
+        ]
 
         if (item.alt_image?.url) {
-          images.push(item.alt_image.url);
+          images.push(item.alt_image.url)
         }
         if (item.alt_image_2?.url) {
-          images.push(item.alt_image_2.url);
+          images.push(item.alt_image_2.url)
         }
         if (item.alt_image_3?.url) {
-          images.push(item.alt_image_3.url);
+          images.push(item.alt_image_3.url)
         }
         if (item.alt_image_4?.url) {
-          images.push(item.alt_image_4.url);
+          images.push(item.alt_image_4.url)
         }
 
-        let section;
+        let section
 
         if (this.header && this.header.data.headline) {
-          section = this.$prismic.richTextAsPlain(this.header.data.headline);
+          section = this.$prismic.richTextAsPlain(this.header.data.headline)
         }
 
         galleries.push({
@@ -163,56 +170,56 @@ export default {
             item.alt_image_3,
             item.alt_image_4
           ]
-        });
-      });
+        })
+      })
 
-      return galleries;
+      return galleries
 
     },
 
     openGallery(idx, e) {
-      const top = e.target.offsetTop + this.$el.offsetTop - this.scroll;
+      const top = e.target.offsetTop + this.$el.offsetTop - this.scroll
 
-      this.galleryIdx = idx;
-      this.zooming = idx;
-      this.$nextTick(this.$refs.overlay.setScale(e, top));
+      this.galleryIdx = idx
+      this.zooming = idx
+      this.$nextTick(this.$refs.overlay.setScale(e, top))
     },
 
     closeGallery() {
-      this.toggleGallery(false);
-      this.galleryIdx = -1;
-      this.zooming = -1;
-      this.$nextTick(this.$refs.overlay.open = false);
+      this.toggleGallery(false)
+      this.galleryIdx = -1
+      this.zooming = -1
+      this.$nextTick(this.$refs.overlay.open = false)
     },
 
     prevSet() {
       if (this.galleryIdx - 1 < 0) {
-        this.closeGallery();
-        return;
+        this.closeGallery()
+        return
       }
 
-      this.galleryIdx--;
+      this.galleryIdx--
     },
 
     nextSet() {
       if (this.galleryIdx + 1 > this.images.length) {
-        this.closeGallery();
-        return;
+        this.closeGallery()
+        return
       }
 
-      this.galleryIdx++;
+      this.galleryIdx++
     },
 
     findDress(hash) {
-      hash = hash.slice(1);
-      document.getElementById(hash).scrollIntoView();
+      hash = hash.slice(1)
+      document.getElementById(hash).scrollIntoView()
     }
   }
 
-};
+}
 
 </script>
-
+ -->
 <style lang="stylus">
 
 @import "../../assets/stylus/_variables"

@@ -13,8 +13,8 @@
 
 <script>
 
-import { mapActions, mapState } from 'pinia';
-import { useShopifyStore } from '../../stores/shopify';
+import { mapActions, mapState } from 'pinia'
+import { useShopifyStore } from '../../stores/shopify'
 
 export default {
 
@@ -38,7 +38,7 @@ export default {
     ])
   }
 
-};
+}
 
 </script>
 

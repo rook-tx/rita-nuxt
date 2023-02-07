@@ -4,6 +4,7 @@ import BasicCopy from './BasicCopy'
 import BasicHero from './BasicHero'
 import GalleryArray from './GalleryArray'
 import GalleryIndex from './GalleryIndex'
+import ImageCopy from './ImageCopy'
 import ImageIndex from './ImageIndex'
 import ImageWall from './ImageWall'
 import LandingHero from './LandingHero'
@@ -16,6 +17,7 @@ export {
   BasicHero,
   GalleryArray,
   GalleryIndex,
+  ImageCopy,
   ImageIndex,
   ImageWall,
   LandingHero,
@@ -29,6 +31,7 @@ export const components = {
   basic_hero: BasicHero,
   gallery_array: GalleryArray,
   gallery_index: GalleryIndex,
+  image_copy: ImageCopy,
   image_index: ImageIndex,
   image_wall: ImageWall,
   landing_hero: LandingHero,
