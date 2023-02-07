@@ -1,0 +1,208 @@
+// ----------
+// Layout
+// ----------
+
+maxwidth() {
+  max-width $desktop
+  margin 0 auto
+  width 100%
+}
+
+abs() {
+  height: 100%
+  left: 0
+  position: absolute
+  top: 0
+  width: 100%
+}
+
+col(x,n) {
+  padding $let * .5rem $gut * .5rem
+  width ((x * 100%) / n)
+
+  @media print {
+    width ((x * 100%) / n)
+  }
+}
+
+
+// ----------
+// Font styles
+// ----------
+
+display1() {
+  fs(46)
+  letter-spacing (1.28 / 46em)
+  font-weight bold
+  text-transform uppercase
+
+  +above($tablet) {
+    fs(100)
+    letter-spacing (1 / 100em)
+    margin-left -.06em
+  }
+}
+
+display2() {
+  fs(20)
+  letter-spacing (.91 / 20em)
+  font-weight bold
+  text-transform uppercase
+
+  +above($tablet) {
+    fs(24)
+    line-height (30 / 24)
+    letter-spacing (1 / 24em)
+  }
+}
+
+body1() {
+  fs(20)
+  line-height (28 / 20)
+  margin (28 / 20em) 0
+
+  +above($tablet) {
+    fs(24)
+    line-height (34 / 24)
+    margin (34 / 24em) 0
+  }
+}
+
+body2() {
+  fs(12)
+  line-height (16 / 12)
+
+  +above($tablet) {
+    fs(14)
+    line-height (18 / 14)
+  }
+}
+
+label() {
+  fs(12)
+  line-height (19 / 14)
+  letter-spacing (1 / 12em)
+  font-weight bold
+  text-transform uppercase
+
+  +above($tablet) {
+    fs(14)
+    line-height (19 / 14)
+  }
+}
+
+underline() {
+  display inline-block
+  vertical-align top
+  position relative
+
+  &::after {
+    bottom -4px
+    display block
+    content ''
+    height 1px
+    position absolute
+    right 0
+    width 100%
+    background $black
+    pointer-events none
+    transform-origin 100% 0
+    opacity 1
+    transform scaleX(1)
+    transform-origin 100% 0
+    transition transform .3s cubic-bezier(.25,.46,.45,.94)
+  }
+
+  &:hover {
+    &::after {
+      transform scaleX(0)
+    }
+  }
+
+  .dark-ui & {
+    &::after {
+      background $w
+    }
+  }
+}
+
+enterline() {
+  display inline-block
+  vertical-align top
+  position relative
+
+  &::after {
+    bottom (4 / 14em)
+    display block
+    pointer-events none
+    height 1px
+    position absolute
+    left 0
+    width 100%
+    background $black
+    content ''
+    transform-origin 100% 0
+    transform scaleX(0)
+    transition transform .3s cubic-bezier(.25,.46,.45,.94)
+  }
+
+  &:hover {
+    &::after {
+      transform-origin 0 0
+      transform scaleX(1)
+    }
+  }
+
+  .dark-ui & {
+    &::after {
+      background $w
+    }
+  }
+}
+
+extarrow() {
+  position relative
+
+  &::after {
+    background url('~~/assets/ext.svg') no-repeat center
+    content ''
+    display inline-block
+    height 12px
+    margin-bottom 2px
+    vertical-align middle
+    width 12px
+
+    .dark-ui & {
+      stroke $w
+    }
+  }
+
+  &::before {
+    bottom (-4 / 12em)
+    display block
+    content ''
+    height 1px
+    position absolute
+    right 0
+    width 100%
+    pointer-events none
+    background $black
+    opacity 1
+    transform scaleX(0)
+    transform-origin 100% 0
+    transition transform .3s cubic-bezier(.25,.46,.45,.94)
+  }
+
+  &:hover {
+    &::before {
+      transform-origin 0 0
+      transform scaleX(1)
+    }
+  }
+
+  .dark-ui & {
+    &::before {
+      background $w
+    }
+  }
+}

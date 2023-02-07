@@ -1,0 +1,33 @@
+@import '_fonts'
+@import '_variables'
+
+div, section, main, header, footer,
+a, p, ul, ol, li, span,
+button, input, textarea
+  box-sizing border-box
+
+html, body
+  margin 0
+  min-height 100%
+
+html
+  background $w
+  color $black
+  font-family $studio
+  font-size ($p / 16) * 100%
+  text-size-adjust 100%
+  -webkit-tap-highlight-color transparent
+
+body
+  font-size 100%
+  line-height $let
+
+::selection
+  background $black
+  color $w
+
+@import '_global'
+@import '_typog'
+
+@import '_app'
+@import '_col'

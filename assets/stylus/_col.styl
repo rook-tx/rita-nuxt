@@ -1,0 +1,156 @@
+// // ----------
+// // Parents
+// // ----------
+
+// .sec
+//   width 100%
+
+
+// // ----------
+// // clearfix
+// // ----------
+
+// .cf {
+//   &::before, &::after {
+//     content ' '
+//     display block
+//   }
+
+//   &::after {
+//     clear both
+//   }
+// }
+
+// .wrap
+//   @extend .cf
+//   margin 0 auto
+//   padding $let * .5rem $gut * .5rem
+//   width 100%
+
+
+// ----------
+// .x-n-col
+// ----------
+
+// .one-col
+//   float left
+//   padding $let * .5rem $gut * .5rem
+//   width 100%
+
+//   +above($mobile)
+//     padding $let * .5rem $gut * .5rem
+
+  // > img
+  //   max-width $pwidth*1rem
+  //   margin-bottom $let*2rem
+  //   width 100%
+
+  // @extend .one-col
+
+  // +above($mobile)
+  //   if x == 1
+  //     if even(n)
+  //       width ((x * 100%) / (n / 2))
+
+  //     if odd(n)
+  //       width ((x * 100%) / ((n + 1) / 2))
+
+  //   if x > 1
+  //     if x == (n - 1)
+  //       width 100%
+
+  //     else
+  //       if even(x)
+  //         if even(n)
+  //           width (((x / 2) * 100%) / (n / 2))
+
+  //         if odd(n)
+  //           width (((x / 2) * 100%) / ((n + 1) / 2))
+
+  //       if odd(x)
+  //         if even(n)
+  //           width ((((x + 1) / 2) * 100%) / (n / 2))
+
+  //         if odd(n)
+  //           width ((((x + 1) / 2) * 100%) / ((n + 1) / 2))
+
+  // +above($tablet)
+  // float left
+
+// .two-col
+//   col(1, 2)
+
+// .three-col
+//   col(1, 3)
+
+// .two-three-col
+//   col(2, 3)
+
+// .four-col
+//   col(1, 4)
+
+// .three-four-col
+//   col(3, 4)
+
+// .six-col
+//   col(1, 6)
+
+// .five-six-col
+//   col(5, 6)
+
+// .twelve-col
+//   col(1, 12)
+
+.three-ten-col
+  col(3, 10)
+
+.seven-ten-col
+  col(7, 10)
+
+.eight-ten-col
+  col(8, 10)
+
+// .seven-twelve-col
+//   col(7, 12)
+
+// .flex-col
+//   flex 1 1 100%
+//   pad(.5, .5)
+
+//   +above($tablet)
+//     flex 1 1 25%
+
+
+// // ----------
+// // Modifers
+// // ----------
+
+// .clear-col.clear-col
+//   float none
+//   padding-left $gut * 1em
+//   padding-right $gut * 1em
+
+// .noPad.noPad
+//   padding-left 0
+//   padding-right 0
+
+// .col-cl.col-cl
+//   clear left
+
+// .col-cr.col-cr
+//   clear right
+
+// .col-c.col-c
+//   clear both
+//   float none
+//   margin-left auto
+//   margin-right auto
+
+// .col-r.col-r
+//   float right
+
+// .align-c.align-c
+//   text-align center
+
+// .align-r.align-r
+//   text-align right

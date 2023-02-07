@@ -1,0 +1,64 @@
+// ----------
+// Colour
+// ----------
+
+$b          = #000
+$w          = #fff
+$bg					= #fcfcfc
+$black			=	#231f20
+
+
+// ----------
+// Font
+// ----------
+
+$base       = -apple-system, system-ui, sans-serif
+$studio 		= 'Studio Pro', $base
+
+font-smoothing()
+	-webkit-font-smoothing antialiased
+	-moz-osx-font-smoothing grayscale
+
+
+// ----------
+// Breakpoints
+// ----------
+
+$mobile     = 600
+$tablet     = 768
+$notebook   = 1024
+$laptop	    = 1200
+$largetop	  = 1400
+$desktop    = 1600
+$ultra	    = 1920
+
+
+// ----------
+// Grid
+// ----------
+
+@import '_type'
+
+above($size)
+	@media screen and (min-width: ($size) * 1px)
+		{block}
+
+below($size)
+	@media screen and (max-width: ($size - 1) * 1px)
+		{block}
+
+aboveAspect($height, $width)
+	@media screen and (min-height: ($height) * 1px) and (min-width: ($width) * 1px)
+		{block}
+
+belowAspect($height, $width)
+	@media screen and (max-height: ($height - 1) * 1px) and (max-width: ($width - 1) * 1px)
+		{block}
+
+
+// ----------
+// Imports
+// ----------
+
+@import '_ease'
+@import '_mixins'

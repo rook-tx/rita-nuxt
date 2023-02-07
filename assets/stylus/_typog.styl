@@ -1,0 +1,76 @@
+// ----------
+// Core type
+// ----------
+
+h1 {
+	fs(mp(4))
+}
+
+h2 {
+	fs(mp(3))
+}
+
+h3 {
+	fs(mp(2))
+}
+
+h4 {
+	fs(mp(1))
+}
+
+h5 {
+	fs($p)
+}
+
+p {
+}
+
+h1, h2, h3, h4, h5, p {
+	font-smoothing()
+	mgn(1, 0)
+	max-width $pwidth * 1em
+}
+
+
+// ----------
+// Modifers
+// ----------
+
+.display1 {
+	display1()
+}
+
+.display2 {
+	display2()
+}
+
+.body1 {
+	body1()
+}
+
+.body2 {
+	body2()
+}
+
+.label {
+	label()
+}
+
+
+// ----------
+// Modifers
+// ----------
+
+strong, b {
+	font-weight bold
+	letter-spacing normal
+}
+
+em, i {
+	font-style italic
+}
+
+sup {
+	font-size smaller
+	vertical-align top
+}

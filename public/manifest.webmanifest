@@ -1,0 +1,23 @@
+{
+  "short_name": "Rita Vinieris",
+  "name": "Rita Vinieris",
+  "icons": [
+    {
+      "src": "./apple-touch-icon.png",
+      "sizes": "32x32 64x64 128x128 256x256 512x512 1024x1024",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./favicon.ico",
+      "sizes": "16x16 32x32 64x64",
+      "type": "image/x-icon"
+    }
+  ],
+  "start_url": ".",
+  "description": "Elevated collecting for the most dedicated of wine enthusiasts.",
+  "background_color": "#ffffff",
+  "theme_color": "#231f20",
+  "display": "standalone",
+  "orientation": "portrait-primary"
+}

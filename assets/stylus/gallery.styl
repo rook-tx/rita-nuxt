@@ -1,0 +1,317 @@
+@import "../../assets/stylus/_variables"
+
+.gallery-overlay {
+  abs()
+  position fixed
+  pointer-events none
+  z-index 21
+
+  &.nocursor {
+    &, .ims, button {
+      cursor none
+    }
+  }
+
+  .dark-ui & {
+    .bg {
+      background $black
+    }
+
+    .close,
+    .expand,
+    .showcursor {
+      svg {
+        stroke $w
+      }
+    }
+  }
+
+  .bg {
+    background $w
+    abs()
+    z-index 0
+  }
+
+  .close {
+    left 20px
+    top 23px
+    position absolute
+    z-index 2
+
+    svg {
+      height 20px
+      stroke $black
+      width 20px
+    }
+
+    +above($tablet) {
+      left 30px
+      top 30px
+
+      button {
+        background rgba($w, .01)
+        cursor pointer
+        padding 10px
+      }
+
+      svg {
+        height 26px
+        stroke $black
+        width 26px
+      }
+    }
+  }
+
+  .content {
+    height 100%
+    position relative
+    z-index 1
+
+    +below($tablet) {
+      min-height 100%
+      overflow scroll
+      --webkit-overflow-scrolling touch
+    }
+
+    h2 {
+      label()
+      margin 0
+    }
+
+    h3 {
+      display2()
+      margin (5 / 24em) 0 $let * 2rem
+    }
+  }
+
+  .mobile-headline {
+    pad(2, .5, 0)
+
+    h2,
+    h3 {
+      text-align center
+      margin 0
+      max-width 100%
+    }
+  }
+
+  .back-zone {
+    abs()
+    opacity 0
+    width (100% / 4)
+
+    > button {
+      abs()
+    }
+  }
+
+  ::selection {
+    background none
+    color inherit
+  }
+
+  .ims {
+    +above($tablet) {
+      bottom 0
+      position absolute
+      top 0
+      left (308 / 1440 * 100%)
+      right (308 / 1440 * 100%)
+    }
+
+    +below($tablet) {
+      height 0
+      padding-top 100%
+      position relative
+    }
+  }
+
+  img {
+    transition opacity $beat * 0.5 $easeInOutSoft
+
+    &.show {
+      opacity 1
+    }
+
+    &.load {
+      opacity 0
+    }
+  }
+
+  &.expanded {
+    .im {
+      img {
+        opacity .4
+        transition-timing-function $easeOutCubic
+        transition-duration $beat * 2
+      }
+
+      &-1 {
+        img {
+          transition-delay $beat * 0.5
+        }
+      }
+
+      &-2 {
+        img {
+          transition-delay $beat
+        }
+      }
+
+      &.im-exp {
+        img {
+          opacity 1
+        }
+      }
+    }
+  }
+
+  .im {
+    display flex
+    position absolute
+    left 0
+    top 0
+    transition opacity $beat $easeOutSoft,
+      transform $beat * 1.5 $easeInOutCubic
+    transition-delay $beat * 1, 0ms
+    transform-origin left top
+
+    &-0 {
+      transition opacity $beat $easeOutSoft,
+        transform $beat * 1.5 $easeInOutCubic
+      transition-delay 0ms
+
+      &.zish {
+        transition-duration $beat, 0ms
+      }
+    }
+
+    &-in {
+      background #fdfdfd
+      margin auto
+      position relative
+
+      .dark-ui & {
+        background lighten($black, 1%)
+      }
+    }
+
+    &.portrait {
+      .im-in {
+        height 100%
+      }
+
+      img {
+        height 100%
+        max-width none
+        width auto
+      }
+
+      .im-1,
+      .im-2 {
+        justify-content flex-end
+      }
+    }
+  }
+
+  .num {
+    left 0
+    top 50%
+    label()
+    right 0
+    position absolute
+    text-align center
+  }
+
+  .blurb {
+    +above($tablet) {
+      cursor auto
+      position absolute
+      bottom 0
+      align-items center
+      display flex
+      right 0
+      top 0
+      pad(0, 1, 0, 0)
+      width 20%
+
+      > div {
+        max-height 90%
+        overflow auto
+        pad(1, 0)
+      }
+    }
+
+    +below($tablet) {
+      left 0
+      pad(1, .5)
+      text-align center
+      width 100%
+
+      > div {
+        p {
+          mgn(0, auto)
+        }
+      }
+    }
+
+    body2()
+
+    li {
+      font-smoothing()
+    }
+
+    h4,
+    p {
+      body2()
+      margin 0
+    }
+
+    h4 {
+      font-weight 500
+      mgn(.5, 0, 0)
+
+      +below($tablet) {
+        &, + p,
+        &::before,
+        &::after {
+          display inline-block
+          vertical-align text-bottom
+        }
+
+        &::before {
+          content ''
+          width 1em
+        }
+
+        &::after {
+          content ':'
+          text-align left
+          width .5em
+        }
+      }
+    }
+
+    .cta {
+      label()
+      underline()
+      mgn(2, 0)
+    }
+
+    p {
+      a[target=_blank] {
+        extarrow()
+      }
+    }
+  }
+
+  .mobile-pag {
+    label()
+    mgn(0, 0, 1)
+  }
+
+  .next {
+    abs()
+    z-index 4
+  }
+}

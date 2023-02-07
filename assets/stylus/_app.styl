@@ -1,0 +1,87 @@
+// ----------
+// Skip
+// ----------
+
+.skip-to {
+  left 0
+  position absolute
+  opacity 0
+  top 0
+  pointer-events none
+  outline 2px solid $gold
+  border-radius 2px
+  pad(.25, .25)
+  z-index 100
+
+  &:focus {
+    opacity 1
+  }
+}
+
+
+// ----------
+// spacer
+// ----------
+
+.spacer {
+  background #ededed
+  border-radius 3px
+  height 1em
+  display inline-block
+  position relative
+  max-width 100%
+  overflow hidden
+  width 13em
+
+  &::after {
+    background linear-gradient(135deg, $light, $border, $light)
+    content ''
+    abs()
+    width 200%
+    animation loadgrad 2000ms linear infinite alternate-reverse
+  }
+}
+
+@keyframes loadgrad {
+  0% {
+    transform translateX(0%)
+  }
+  50% {
+    transform translateX(-50%)
+  }
+  100% {
+    transform translateX(0%)
+  }
+}
+
+
+// ----------
+// Parents
+// ----------
+
+.sec
+  width 100%
+
+
+// ----------
+// clearfix
+// ----------
+
+.cf {
+  &::before, &::after {
+    content ' '
+    display block
+  }
+
+  &::after {
+    clear both
+  }
+}
+
+.wrap
+  @extend .cf
+  margin 0 auto
+  padding $let * .5rem $gut * .5rem
+  width 100%
+
+@import "_col"
