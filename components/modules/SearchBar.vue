@@ -109,7 +109,7 @@ export default {
 
     &::-webkit-search-cancel-button {
       appearance none
-      background url('/close.svg') no-repeat
+      background url('/static/close.svg') no-repeat
       background-size contain
       height 18px
       width 18px

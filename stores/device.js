@@ -4,7 +4,7 @@ export const useDeviceStore = defineStore('device', {
   state: () => ({
     device: {
       platform: 'MacIntel',
-      mobile: null,
+      mobile: false,
       win: {
         // x: window.innerWidth,
         // y: window.innerHeight
