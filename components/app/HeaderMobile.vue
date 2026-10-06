@@ -107,12 +107,13 @@
 import { mapActions, mapState } from 'pinia'
 import { useSearchStore } from '~~/stores/search'
 import { useUiStore } from '~~/stores/ui'
+import Close from '../svg/Close.vue'
 
 import header from '../mixins/header'
 
 export default {
   components: {
-    Close: () => import('../svg/Close.vue'),
+    Close: Close,
   },
 
   mixins: [header],

@@ -10,11 +10,9 @@
                   <li
                     v-for="(link, idx) in collectionLinks"
                     :key="idx"
-                    :class="[ 'link' , link.class ? link.class : null ]"
+                    :class="['link', link.class ? link.class : null]"
                   >
-                    <nuxt-link
-                      :to="link.route"
-                    >
+                    <nuxt-link :to="link.route">
                       {{ link.name }}
                     </nuxt-link>
                   </li>
@@ -26,11 +24,9 @@
                   <li
                     v-for="(link, idx) in exploreLinks"
                     :key="idx"
-                    :class="[ 'link' , link.class ? link.class : null ]"
+                    :class="['link', link.class ? link.class : null]"
                   >
-                    <nuxt-link
-                      :to="link.route"
-                    >
+                    <nuxt-link :to="link.route">
                       {{ link.name }}
                     </nuxt-link>
                   </li>
@@ -42,12 +38,9 @@
                   <li
                     v-for="(link, idx) in helpLinks"
                     :key="idx"
-                    :class="[ 'link' , link.class ? link.class : null ]"
+                    :class="['link', link.class ? link.class : null]"
                   >
-                    <a
-                      :href="link.route"
-                    >{{ link.name }}
-                    </a>
+                    <a :href="link.route">{{ link.name }} </a>
                   </li>
                 </ul>
               </div>
@@ -57,21 +50,13 @@
                   <li
                     v-for="(link, idx) in followLinks"
                     :key="idx"
-                    :class="[ 'link' , link.class ? link.class : null ]"
+                    :class="['link', link.class ? link.class : null]"
                   >
-                    <nuxt-link
-                      v-if="idx === 0"
-                      :to="link.route"
-                    >
+                    <nuxt-link v-if="idx === 0" :to="link.route">
                       {{ link.name }}
                     </nuxt-link>
 
-                    <a
-                      v-else
-                      target="_blank"
-                      rel="noopener"
-                      :href="link.route"
-                    >{{ link.name }}</a>
+                    <a v-else target="_blank" rel="noopener" :href="link.route">{{ link.name }}</a>
                   </li>
                 </ul>
               </div>
@@ -79,40 +64,23 @@
           </nav>
         </div>
 
-        <div
-          v-if="mobile"
-          class="copy-row"
-        >
+        <div v-if="mobile" class="copy-row">
           <div class="copy">
             <span class="body2">&copy; 2021 Rita Vinieris</span>
           </div>
 
           <div class="terms">
             <div class="body2">
-              <nuxt-link
-                to="/shipping"
-              >
-                Shipping Policy
-              </nuxt-link>
-              <nuxt-link
-                to="/terms"
-              >
-                Terms &amp; Conditions
-              </nuxt-link>
-              <nuxt-link
-                to="/privacy"
-              >
-                Privacy Policy
-              </nuxt-link>
+              <nuxt-link to="/shipping"> Shipping Policy </nuxt-link>
+              <nuxt-link to="/terms"> Terms &amp; Conditions </nuxt-link>
+              <nuxt-link to="/privacy"> Privacy Policy </nuxt-link>
             </div>
           </div>
         </div>
 
         <div class="three-ten-col">
           <div class="mailer">
-            <h3 class="label header-link">
-              Stay Posted
-            </h3>
+            <h3 class="label header-link">Stay Posted</h3>
             <p class="body2">
               Subscribe to our newsletter to receive updates on new launches and events.
             </p>
@@ -137,17 +105,14 @@
                       class="email form-row-input"
                       placeholder="Your Email"
                       required
-                    >
-                    <div
-                      style="position: absolute; left: -5000px;"
-                      aria-hidden="true"
-                    >
+                    />
+                    <div style="position: absolute; left: -5000px" aria-hidden="true">
                       <input
                         type="text"
                         name="b_2b5110f250f93c1a89ffdbb2c_44bb29ed55"
                         tabindex="-1"
                         value=""
-                      >
+                      />
                     </div>
                     <div class="clear">
                       <input
@@ -156,7 +121,7 @@
                         value="Submit"
                         name="subscribe"
                         class="button form-row-button"
-                      >
+                      />
                     </div>
                   </div>
                 </form>
@@ -167,29 +132,16 @@
         </div>
       </div>
 
-      <div
-        v-if="!mobile"
-        class="copy-row"
-      >
+      <div v-if="!mobile" class="copy-row">
         <div class="copy">
           <span class="body2">&copy; 2022 Rita Vinieris</span>
         </div>
 
         <div class="terms">
           <div class="body2">
-            <nuxt-link
-              to="/shipping"
-            >
-              Shipping Policy
-            </nuxt-link> | <nuxt-link
-              to="/terms"
-            >
-              Terms &amp; Conditions
-            </nuxt-link> | <nuxt-link
-              to="/privacy"
-            >
-              Privacy Policy
-            </nuxt-link>
+            <nuxt-link to="/shipping"> Shipping Policy </nuxt-link> |
+            <nuxt-link to="/terms"> Terms &amp; Conditions </nuxt-link> |
+            <nuxt-link to="/privacy"> Privacy Policy </nuxt-link>
           </div>
         </div>
       </div>
@@ -202,66 +154,64 @@
 </template>
 
 <script>
-
 import { mapState } from 'pinia'
 import { useDeviceStore } from '~~/stores/device'
 
 export default {
-
   data() {
     const collectionLinks = [
       {
         route: '/',
         name: 'Collections',
-        class: 'header-link'
+        class: 'header-link',
       },
       {
         route: '/rivini',
-        name: 'Rivini'
+        name: 'Rivini',
       },
       {
         route: '/alyne',
-        name: 'Alyne'
+        name: 'Alyne',
       },
       {
         route: '/veils',
-        name: 'Veils'
+        name: 'Veils',
       },
       {
         route: '/about#bespoke',
-        name: 'Bespoke'
-      }
+        name: 'Bespoke',
+      },
     ]
 
     const exploreLinks = [
       {
         route: '/about',
         name: 'Explore',
-        class: 'header-link'
+        class: 'header-link',
       },
       {
         route: '/about',
-        name: 'About Rita'
+        name: 'About Rita',
       },
       {
         route: '/the-feature',
-        name: 'News & Events'
+        name: 'News & Events',
       },
       {
         route: '/find-store',
-        name: 'Find a Store'
+        name: 'Find a Store',
       },
       {
         route: '/find-store#trunk-shows',
-        name: 'Trunk Shows'
-      }
+        name: 'Trunk Shows',
+      },
     ]
 
     const helpLinks = [
       {
         route: '#',
         name: 'Help',
-        class: 'header-link'
+        class: 'header-link',
       },
       // {
       //   route: 'tel:18001234567',
@@ -269,28 +219,28 @@ export default {
       // },
       {
         route: 'mailto:concierge@ritavinieris.com',
-        name: 'concierge@ritavinieris.com'
-      }
+        name: 'concierge@ritavinieris.com',
+      },
     ]
 
     const followLinks = [
       {
         route: '#',
         name: 'Follow',
-        class: 'header-link'
+        class: 'header-link',
       },
       {
         route: 'https://www.instagram.com/ritavinieris/',
-        name: 'Instagram'
+        name: 'Instagram',
       },
       {
         route: 'https://www.twitter.com/RitaVinieris',
-        name: 'Twitter'
+        name: 'Twitter',
       },
       {
         route: 'https://www.facebook.com/ritavineris/',
-        name: 'Facebook'
-      }
+        name: 'Facebook',
+      },
     ]
 
     return {
@@ -298,18 +248,14 @@ export default {
       exploreLinks,
       helpLinks,
       followLinks,
-      email: null
+      email: null,
     }
   },
 
   computed: {
-    ...mapState(useDeviceStore, [
-      'mobile'
-    ])
-  }
-
+    ...mapState(useDeviceStore, ['mobile']),
+  },
 }
-
 </script>
 
 <style lang="stylus">
@@ -643,7 +589,7 @@ export default {
     padding:0em .5em 0em .5em
     overflow:hidden
     width:90%
-    argin: 0 5%
+    margin: 0 5%
     clear: both
   }
 
@@ -681,5 +627,4 @@ export default {
     // font:14px Helvetica,Arial,sans-serif;
   }
 }
-
 </style>
