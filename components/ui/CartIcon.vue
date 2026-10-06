@@ -1,10 +1,6 @@
 <template>
-  <div :class="[ 'cart-icon', { items: hasItems } ]">
-    <button
-      :class="iconClass"
-      type="button"
-      @click.left="toggleCart(!cartOpen)"
-    >
+  <div :class="['cart-icon', { items: hasItems }]">
+    <button :class="iconClass" type="button" @click.left="toggleCart(!cartOpen)">
       <span v-html="'Cart'" />
     </button>
     <div class="dot" />
@@ -12,34 +8,25 @@
 </template>
 
 <script>
-
 import { mapActions, mapState } from 'pinia'
 import { useShopifyStore } from '../../stores/shopify'
 
 export default {
-
   props: {
     iconClass: {
       type: String,
-      default: 'drop-head'
-    }
+      default: 'drop-head',
+    },
   },
 
   computed: {
-    ...mapState(useShopifyStore, [
-      'cartOpen',
-      'hasItems'
-    ])
+    ...mapState(useShopifyStore, ['cartOpen', 'hasItems']),
   },
 
   methods: {
-    ...mapActions(useShopifyStore, [
-      'toggleCart'
-    ])
-  }
-
+    ...mapActions(useShopifyStore, ['toggleCart']),
+  },
 }
-
 </script>
 
 <style lang="stylus">
@@ -71,5 +58,4 @@ export default {
     }
   }
 }
-
 </style>

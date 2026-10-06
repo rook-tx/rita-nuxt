@@ -1,72 +1,22 @@
 <template>
   <header>
-    <div
-      :class="[
-        'bar-icon',
-        { margin: showStoreNoti }
-      ]"
-    >
-      <button
-        type="button"
-        class="bar-btn"
-        @click.left="toggleDrawer"
-      >
-        Menu
-      </button>
+    <div :class="['bar-icon']">
+      <button type="button" class="bar-btn" @click.left="toggleDrawer">Menu</button>
     </div>
 
     <div class="header-bar">
-      <transition>
-        <div
-          v-if="showStoreNoti"
-          class="store-noti"
-        >
-          Our veils are now shoppable online!
-        </div>
-      </transition>
-
-      <div :class="[ 'lockup-badge', show || drawerOpen ? 'show' : 'hide' ]">
+      <div :class="['lockup-badge', show || drawerOpen ? 'show' : 'hide']">
         <div class="home">
-          <router-link
-            to="/"
-            title="Home"
-            @click.native.left="toggleCart(false)"
-          >
-            <lockup
-              ref="lockup"
-              focusable="false"
-            />
-          </router-link>
+          <nuxt-link to="/" title="Home">
+            <lockup ref="lockup" focusable="false" />
+          </nuxt-link>
         </div>
       </div>
     </div>
 
-    <div
-      :class="[
-        'bar-icon',
-        'bar-cart-icon',
-        { margin: showStoreNoti }
-      ]"
-    >
-      <div :class="[ 'link', 'cart', $route.name === 'cart' || $route.name === 'veils' ? 'open' : 'closed' ]">
-        <cart-icon
-          icon-class="link-head"
-        />
-      </div>
-    </div>
-
-    <div
-      :class="[
-        'nav-drawer',
-        drawerOpen ? 'drawer-open' : 'drawer-closed'
-      ]"
-    >
+    <div :class="['nav-drawer', drawerOpen ? 'drawer-open' : 'drawer-closed']">
       <div class="drawer-icon">
-        <button
-          type="button"
-          class="drawer-btn"
-          @click.left="toggleDrawer"
-        >
+        <button type="button" class="drawer-btn" @click.left="toggleDrawer">
           <close />
         </button>
       </div>
@@ -77,11 +27,7 @@
             <li
               v-for="(link, idx) in navLinks"
               :key="idx"
-              :class="[
-                'link',
-                link.class ? link.class : null,
-                { 'open': dropOpen === idx }
-              ]"
+              :class="['link', link.class ? link.class : null, { open: dropOpen === idx }]"
             >
               <button
                 v-if="link.class === 'just-drop'"
@@ -90,25 +36,26 @@
                 @click.left="toggleDrop(idx)"
                 v-html="link.name"
               />
-              <router-link
+              <a
+                v-else-if="link.ext"
+                :href="link.ext.url"
+                class="link-head"
+                target="_blank"
+                v-html="link.name"
+              />
+              <nuxt-link
                 v-else
                 :to="link.route"
                 class="link-head"
-                @click.native.left="closeDrawer"
+                @click.left="closeDrawer"
                 v-html="link.name"
               />
-              <div
-                v-if="link.sub"
-                class="drop"
-              >
+              <div v-if="link.sub" class="drop">
                 <ul>
-                  <li
-                    v-for="(sublink, sidx) in link.sub"
-                    :key="sidx"
-                  >
-                    <router-link
+                  <li v-for="(sublink, sidx) in link.sub" :key="sidx">
+                    <nuxt-link
                       :to="sublink.route"
-                      @click.native.left="closeDrawer"
+                      @click.left="closeDrawer"
                       v-html="sublink.name"
                     />
                   </li>
@@ -119,38 +66,26 @@
 
           <div class="links">
             <li class="link">
-              <button
-                type="button"
-                class="link-head"
-                @click.left="toggleSearch"
-              >
-                Search
-              </button>
+              <button type="button" class="link-head" @click.left="toggleSearch">Search</button>
             </li>
 
             <li
               v-for="(link, idx) in contactLinks"
               :key="idx"
-              :class="[ 'link', link.class ? link.class : null ]"
+              :class="['link', link.class ? link.class : null]"
             >
-              <router-link
+              <nuxt-link
                 :to="link.route"
                 class="link-head"
-                @click.native.left="closeDrawer"
+                @click.left="closeDrawer"
                 v-html="link.name"
               />
-              <div
-                v-if="link.sub"
-                class="drop"
-              >
+              <div v-if="link.sub" class="drop">
                 <ul>
-                  <li
-                    v-for="(sublink, sidx) in link.sub"
-                    :key="sidx"
-                  >
-                    <router-link
+                  <li v-for="(sublink, sidx) in link.sub" :key="sidx">
+                    <nuxt-link
                       :to="sublink.route"
-                      @click.native.left="closeDrawer"
+                      @click.left="closeDrawer"
                       v-html="sublink.name"
                     />
                   </li>
@@ -162,82 +97,67 @@
       </nav>
     </div>
 
-    <transition
-      appear
-      duration="650"
-    >
-      <search-bar
-        v-if="searchOpen"
-      />
+    <transition appear duration="650">
+      <search-bar v-if="searchOpen" />
     </transition>
   </header>
 </template>
 
 <script>
+import { mapActions, mapState } from 'pinia'
+import { useSearchStore } from '~~/stores/search'
+import { useUiStore } from '~~/stores/ui'
 
-import { mapActions, mapState } from 'pinia';
-import { useSearchStore } from '~~/stores/search';
-import { useUiStore } from '~~/stores/ui';
-
-import header from '../mixins/header';
+import header from '../mixins/header'
 
 export default {
-
   components: {
-    Close: () => import('../svg/Close.vue')
+    Close: () => import('../svg/Close.vue'),
   },
 
-  mixins: [
-    header
-  ],
+  mixins: [header],
 
   data() {
     return {
       drawerOpen: false,
-      dropOpen: -1
-    };
+      dropOpen: -1,
+    }
   },
 
   computed: {
-    ...mapState(useUiStore, [
-      'galleryOpen'
-    ])
+    ...mapState(useUiStore, ['galleryOpen']),
   },
 
   watch: {
     $route: {
       handler() {
         if (this.drawerOpen) {
-          this.drawerOpen = false;
+          this.drawerOpen = false
         }
-      }
-    }
+      },
+    },
   },
 
   methods: {
-    ...mapActions(useSearchStore, [
-      'closeSearch'
-    ]),
+    ...mapActions(useSearchStore, ['closeSearch']),
 
     closeDrawer() {
-      this.drawerOpen = false;
+      this.drawerOpen = false
     },
 
     toggleDrawer() {
-      this.drawerOpen = !this.drawerOpen;
+      this.drawerOpen = !this.drawerOpen
 
       if (this.searchOpen) {
-        this.closeSearch();
+        this.closeSearch()
       }
     },
 
     toggleDrop(idx) {
-      this.dropOpen = this.dropOpen === idx ? -1 : idx;
-    }
-  }
-
-};
-
+      this.dropOpen = this.dropOpen === idx ? -1 : idx
+    },
+  },
+}
 </script>
 
 <style lang="stylus">
@@ -458,5 +378,4 @@ export default {
     }
   }
 }
-
 </style>

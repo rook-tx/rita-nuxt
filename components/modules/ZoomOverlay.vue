@@ -7,8 +7,8 @@
       showingZoom ? 'expanded' : 'collapsed',
       mobile ? 'cursor' : 'nocursor',
       {
-        'gallery-opening': opening
-      }
+        'gallery-opening': opening,
+      },
     ]"
   >
     <div class="bg" />
@@ -24,38 +24,16 @@
       </button>
     </div>
 
-    <div
-      class="content"
-    >
-      <div
-        v-if="mobile"
-        class="mobile-headline"
-      >
-        <router-link
-          :to="link"
-          @click.native.left="closeSearchAndGallery"
-        >
-          <h2
-            v-if="section"
-            v-html="section"
-          />
-        </router-link>
-        <h3
-          v-html="headline"
-        />
+    <div class="content">
+      <div v-if="mobile" class="mobile-headline">
+        <nuxt-link :to="link" @click.left="closeSearchAndGallery">
+          <h2 v-if="section" v-html="section" />
+        </nuxt-link>
+        <h3 v-html="headline" />
       </div>
 
-      <div
-        class="back-zone"
-        @mouseover="onBack"
-        @mouseout="offBack"
-      >
-        <button
-          type="button"
-          @click.left.prevent="prev"
-        >
-          Back
-        </button>
+      <div class="back-zone" @mouseover="onBack" @mouseout="offBack">
+        <button type="button" @click.left.prevent="prev">Back</button>
       </div>
 
       <transition appear>
@@ -78,26 +56,21 @@
               {
                 zish: zish,
                 portrait: im.ar < contentArs[idx],
-                'im-exp': expIdx === idx
-              }
+                'im-exp': expIdx === idx,
+              },
             ]"
             :style="imZoom[idx]"
           >
-            <div
-              ref="framein"
-              class="im-in"
-            >
+            <div ref="framein" class="im-in">
               <img
                 ref="ims"
                 :class="im.show ? 'show' : 'load'"
                 :src="im.src"
                 alt=""
                 @load="getAr($event, idx)"
-              >
+              />
 
-              <div
-                class="expand"
-              >
+              <div class="expand">
                 <button
                   type="button"
                   aria-label="Expand image"
@@ -112,75 +85,35 @@
         </div>
       </transition>
 
-      <div
-        class="blurb"
-        @mouseover="showPag = false"
-      >
+      <div class="blurb" @mouseover="showPag = false">
         <div @click.stop>
-          <div
-            v-if="mobile"
-            class="mobile-pag"
-            v-html="`${displayIdx + 1} of ${images.length}`"
-          />
-          <router-link
+          <div v-if="mobile" class="mobile-pag" v-html="`${displayIdx + 1} of ${images.length}`" />
+          <nuxt-link
             v-if="!mobile && link && section"
             :to="link"
             class="section-link"
-            @click.native.left="closeSearchAndGallery"
+            @click.left="closeSearchAndGallery"
           >
-            <h2
-              v-html="section"
-            />
-          </router-link>
+            <h2 v-html="section" />
+          </nuxt-link>
 
-          <h2
-            v-else-if="!mobile && section"
-            v-html="section"
-          />
+          <h2 v-else-if="!mobile && section" v-html="section" />
 
-          <h3
-            v-if="!mobile"
-            v-html="headline"
-          />
+          <h3 v-if="!mobile" v-html="headline" />
 
-          <prismic-rich-text
-            v-if="copy && copy.constructor === Array"
-            :field="copy"
-          />
+          <prismic-rich-text v-if="copy && copy.constructor === Array" :field="copy" />
 
-          <div
-            v-else
-            v-html="copy"
-          />
+          <div v-else v-html="copy" />
 
           <p v-if="$route.params.slug !== 'bespoke'">
-            <button
-              v-if="shop"
-              class="cta"
-              type="button"
-              @click.left="addToCart"
-              v-html="added"
-            />
-
-            <router-link
-              v-else
-              to="/find-store"
-              class="cta"
-              event=""
-              @click.left.native="openMap"
-            >
+            <nuxt-link to="/find-store" class="cta" event="" @click.left="openMap">
               Find in store
-            </router-link>
+            </nuxt-link>
           </p>
 
           <p v-if="$route.params.slug !== 'bespoke'">
             Questions?
-            <a
-              href="mailto:concierge@ritavinieris.com"
-              target="_blank"
-              rel="noopener"
-            >Email us
-            </a>
+            <a href="mailto:concierge@ritavinieris.com" target="_blank" rel="noopener">Email us </a>
           </p>
         </div>
       </div>
@@ -191,7 +124,7 @@
         v-if="!mobile && showBack && !expanded"
         class="pagcursor"
         :style="{
-          transform: `translateX(${newPos.x}px) translateY(${newPos.y}px)`
+          transform: `translateX(${newPos.x}px) translateY(${newPos.y}px)`,
         }"
         v-html="`Back`"
       />
@@ -202,38 +135,18 @@
         v-if="!mobile && showPag && !expanded"
         class="pagcursor"
         :style="{
-          transform: `translateX(${newPos.x}px) translateY(${newPos.y}px)`
+          transform: `translateX(${newPos.x}px) translateY(${newPos.y}px)`,
         }"
         v-html="`${displayIdx + 1} of ${images.length}`"
       />
     </transition>
 
     <div class="zoom-overlay">
-      <transition
-        appear
-        duration="1300"
-      >
-        <div
-          v-if="expanded"
-          ref="zoom"
-          class="zoom-image"
-          :style="pos"
-          @click.left="collapseImage"
-        >
-          <div
-            class="zoom-spacer"
-            :style="zoomDims"
-          />
-          <img
-            :src="images[expIdx].src"
-            alt=""
-          >
-          <img
-            :class="showZoom ? 'show' : 'load'"
-            :src="expanded"
-            alt=""
-            @load="imDims"
-          >
+      <transition appear duration="1300">
+        <div v-if="expanded" ref="zoom" class="zoom-image" :style="pos" @click.left="collapseImage">
+          <div class="zoom-spacer" :style="zoomDims" />
+          <img :src="images[expIdx].src" alt="" />
+          <img :class="showZoom ? 'show' : 'load'" :src="expanded" alt="" @load="imDims" />
         </div>
       </transition>
 
@@ -241,40 +154,29 @@
         v-if="expanded"
         class="showcursor"
         :style="{
-          transform: `translateX(${newPos.x}px) translateY(${newPos.y}px)`
+          transform: `translateX(${newPos.x}px) translateY(${newPos.y}px)`,
         }"
       >
-        <close :style="{transform: `rotateZ(${cursorPos.z}deg)` }" />
+        <close :style="{ transform: `rotateZ(${cursorPos.z}deg)` }" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import gallery from '../mixins/gallery'
 
-import gallery from '../mixins/gallery';
-import product from '../mixins/product';
-
-import { mapActions, mapState } from 'pinia';
-import { useDeviceStore } from '../../stores/device';
-import { useSearchStore } from '../../stores/search';
+import { mapActions, mapState } from 'pinia'
+import { useDeviceStore } from '../../stores/device'
+import { useSearchStore } from '../../stores/search'
 
 export default {
-
-  mixins: [
-    gallery,
-    product
-  ],
+  mixins: [gallery],
 
   data() {
     return {
-
-      images: [
-        { ar: 0.8 }
-      ],
-      contentArs: [
-        540 / 812
-      ],
+      images: [{ ar: 0.8 }],
+      contentArs: [540 / 812],
 
       opening: false,
       zish: false,
@@ -291,56 +193,56 @@ export default {
         // x: window.innerWidth * 0.5,
         // y: window.innerHeight * 0.5
         x: 720,
-        y: 400
+        y: 400,
       },
-      
+
       cursorPos: {
         // x: window.innerWidth * 0.4,
         // y: window.innerHeight * 0.4,
         x: 720,
         y: 400,
-        z: -45
+        z: -45,
       },
 
       imZoom: [],
 
-      frameKey: -1
-
-    };
+      frameKey: -1,
+    }
   },
 
   computed: {
-    ...mapState(useDeviceStore, [
-      'winWidth',
-      'winHeight'
-    ]),
+    ...mapState(useDeviceStore, ['winWidth', 'winHeight']),
 
     pos() {
-      return `transform:translateX(${this.offX}%) translateY(${this.offY}%) translateZ(0)`;
+      return `transform:translateX(${this.offX}%) translateY(${this.offY}%) translateZ(0)`
     },
 
     zoomWidth() {
-      return Math.round(this.mobile ? this.winHeight * this.images[this.displayIdx].ar : this.winWidth * 1.1);
+      return Math.round(
+        this.mobile ? this.winHeight * this.images[this.displayIdx].ar : this.winWidth * 1.1,
+      )
     },
 
     zoomHeight() {
-      return Math.round(this.mobile ? this.winHeight : this.winWidth * 1.1 / this.images[this.displayIdx].ar);
+      return Math.round(
+        this.mobile ? this.winHeight : (this.winWidth * 1.1) / this.images[this.displayIdx].ar,
+      )
     },
 
     zoomDims() {
       return {
         height: `${this.zoomHeight}px`,
-        width: `${this.zoomWidth}px`
-      };
+        width: `${this.zoomWidth}px`,
+      }
     },
 
     xRatio() {
-      return (this.zoomWidth - this.winWidth) / this.zoomWidth * 100;
+      return ((this.zoomWidth - this.winWidth) / this.zoomWidth) * 100
     },
 
     yRatio() {
-      return (this.zoomHeight - this.winHeight) / this.zoomHeight * 100;
-    }
+      return ((this.zoomHeight - this.winHeight) / this.zoomHeight) * 100
+    },
   },
 
   watch: {
@@ -348,301 +250,281 @@ export default {
       immediate: true,
       handler(content, oldContent) {
         if (content) {
-          console.log('go'); // eslint-disable-line
+          console.log('go') // eslint-disable-line
 
-          this.displayIdx = 0;
+          this.displayIdx = 0
 
-          const ims = content.images;
+          const ims = content.images
 
           this.images = ims.map((im, idx) => {
             return {
               src: im,
-              ar: content.objs ?
-                content.objs[idx].dimensions.width / content.objs[idx].dimensions.height : 0,
+              ar: content.objs
+                ? content.objs[idx].dimensions.width / content.objs[idx].dimensions.height
+                : 0,
               show: false,
-              obj: content.objs ? content.objs[idx] : null
-            };
-          });
+              obj: content.objs ? content.objs[idx] : null,
+            }
+          })
 
-          const imZooms = [];
+          const imZooms = []
 
           ims.forEach((im, idx) => {
-            imZooms.push(this.getImZoom(idx, ims.length));
-          });
+            imZooms.push(this.getImZoom(idx, ims.length))
+          })
 
-          this.imZoom = imZooms;
+          this.imZoom = imZooms
 
           this.contentArs = content.images.map(() => {
-            return 540 / 812;
-          });
+            return 540 / 812
+          })
 
-          this.section = content.section;
-          this.headline = content.headline;
-          this.copy = content.copy;
+          this.section = content.section
+          this.headline = content.headline
+          this.copy = content.copy
 
-          if (this.shop) {
-            this.product = content.product;
-            this.variants = this.product.variants.filter((x) => {
-              return x.available;
-            });
-            this.selectedVariant = this.variants.length ? this.variants[0].id : this.product.variants[0].id;
-          }
+          this.frameKey = content.gidx
+          this.link = content.link ? content.link : this.link
 
-          this.frameKey = content.gidx;
-          this.link = content.link ? content.link : this.link;
-
+          this.$nextTick(this.openGallery)
         }
 
         if (!oldContent && this.$refs.ims && this.$refs.ims.length) {
-          console.log('re'); // eslint-disable-line
+          console.log('re') // eslint-disable-line
           this.$refs.ims.forEach((im, idx) => {
-            this.getAr({
-              target: {
-                clientWidth: im.clientWidth,
-                clientHeight: im.clientHeight
-              }
-            }, idx);
-          });
+            this.getAr(
+              {
+                target: {
+                  clientWidth: im.clientWidth,
+                  clientHeight: im.clientHeight,
+                },
+              },
+              idx,
+            )
+          })
         }
-      }
+      },
     },
 
     win: {
       handler() {
-        this.getContentAr();
-      }
+        this.getContentAr()
+      },
     },
 
     open: {
       handler(open) {
         if (open) {
-          window.addEventListener('mousemove', this.momo, { passive: true });
+          window.addEventListener('mousemove', this.momo, { passive: true })
         } else {
-          this.showBack = false;
-          this.showPag = false;
-          window.removeEventListener('mousemove', this.momo, { passive: true });
+          this.showBack = false
+          this.showPag = false
+          window.removeEventListener('mousemove', this.momo, { passive: true })
         }
-      }
-    }
+      },
+    },
   },
 
   beforeDestroy() {
-    window.removeEventListener('mousemove', this.momo, { passive: true });
+    window.removeEventListener('mousemove', this.momo, { passive: true })
   },
 
   methods: {
     getImZoom(idx, length) {
-
       const im0 = {
-        height: `${812 / 900 * 100}%`,
-        transform: `translateX(${122 / 540 * 100}%) translateY(${47 / 812 * 100}%) translateZ(0) scale(1)`, // eslint-disable-line
-        width: `${540 / 784 * 100}%`
-      };
+        height: `${(812 / 900) * 100}%`,
+        transform: `translateX(${(122 / 540) * 100}%) translateY(${(47 / 812) * 100}%) translateZ(0) scale(1)`, // eslint-disable-line
+        width: `${(540 / 784) * 100}%`,
+      }
 
       const im1 = {
-        height: `${706 / 900 * 100}%`,
-        transform: `translateX(${67 / 422 * 100}%) translateY(${80 / 706 * 100}%) translateZ(0) scale(1)`, // eslint-disable-line
-        width: `${422 / 784 * 100}%`
-      };
+        height: `${(706 / 900) * 100}%`,
+        transform: `translateX(${(67 / 422) * 100}%) translateY(${(80 / 706) * 100}%) translateZ(0) scale(1)`, // eslint-disable-line
+        width: `${(422 / 784) * 100}%`,
+      }
 
       const im2 = {
-        height: `${671 / 900 * 100}%`,
-        transform: `translateX(${311 / 402 * 100}%) translateY(${157 / 671 * 100}%) translateZ(0) scale(1)`, // eslint-disable-line
-        width: `${402 / 784 * 100}%`
-      };
+        height: `${(671 / 900) * 100}%`,
+        transform: `translateX(${(311 / 402) * 100}%) translateY(${(157 / 671) * 100}%) translateZ(0) scale(1)`, // eslint-disable-line
+        width: `${(402 / 784) * 100}%`,
+      }
 
-      let xform = idx % 3 === 1 ? im1 :
-        idx % 3 === 2 ? im2 :
-          im0;
+      let xform = idx % 3 === 1 ? im1 : idx % 3 === 2 ? im2 : im0
 
       if (this.content.gidx && this.content.gidx % 2) {
-        xform = idx % 3 === 1 ? im2 :
-          idx % 3 === 2 ? im1 :
-            im0;
+        xform = idx % 3 === 1 ? im2 : idx % 3 === 2 ? im1 : im0
       }
 
       return {
         ...xform,
-        zIndex: length - idx
-      };
+        zIndex: length - idx,
+      }
     },
 
-    ...mapActions(useSearchStore, [
-      'closeSearch'
-    ]),
+    ...mapActions(useSearchStore, ['closeSearch']),
 
     setScale(e, top) {
+      this.top = top
 
-      this.top = top;
+      const frame = this.$refs.frame
+      const frameIn = this.$refs.framein[0]
 
-      const frame = this.$refs.frame;
-      const frameIn = this.$refs.framein[0];
+      this.left = e.target.offsetLeft - frame.offsetLeft
 
-      this.left = e.target.offsetLeft - frame.offsetLeft;
+      this.scale =
+        e.target.clientWidth / (frameIn ? frameIn.clientWidth : (540 / 784) * frame.clientWidth)
 
-      this.scale = e.target.clientWidth / (frameIn ? frameIn.clientWidth : 540 / 784 * frame.clientWidth);
-
-      this.$nextTick(this.openGallery);
-
+      this.$nextTick(this.openGallery)
     },
 
     openGallery() {
-      this.opening = true;
+      this.opening = true
 
-      this.toggleGallery(true);
+      this.toggleGallery(true)
 
-      this.zish = true;
-      this.imZoom[0].transform =
-        `translateX(${this.left}px) translateY(${this.top}px) translateZ(0) scale(${this.scale})`;
+      this.zish = true
+      this.imZoom[0].transform = `translateX(${this.left}px) translateY(${this.top}px) translateZ(0) scale(${this.scale})`
 
-      this.open = true;
-
-      setTimeout(() => {
-        this.zish = false;
-        this.imZoom[0].transform =
-          `translateX(${122 / 540 * 100}%) translateY(${47 / 812 * 100}%) translateZ(0) scale(1)`; // eslint-disable-line
-      }, 650 * 0.25);
+      this.open = true
 
       setTimeout(() => {
-        this.opening = false;
-      }, 650 * 1.5);
+        this.zish = false
+        this.imZoom[0].transform = `translateX(${(122 / 540) * 100}%) translateY(${(47 / 812) * 100}%) translateZ(0) scale(1)` // eslint-disable-line
+      }, 650 * 0.25)
+
+      setTimeout(() => {
+        this.opening = false
+      }, 650 * 1.5)
     },
 
     closeSearchAndGallery() {
-      this.closeSearch();
-      this.$nextTick(this.closeGallery);
+      this.closeSearch()
+      this.$nextTick(this.closeGallery)
     },
 
     closeGallery() {
-      this.toggleGallery(false);
-      this.$emit('closeGallery');
-      this.open = false;
-      this.zish = false;
-      this.frameKey = -1;
+      this.toggleGallery(false)
+      this.$emit('closeGallery')
+      this.open = false
+      this.zish = false
+      this.frameKey = -1
     },
 
     openMap() {
       // this.$root.$emit('openMap');
-      console.log('openMap');
+      console.log('openMap')
     },
 
     expandImage(e, idx) {
+      this.showingZoom = true
 
-      this.showingZoom = true;
+      this.newPos.x = e.clientX
+      this.newPos.y = e.clientY
 
-      this.newPos.x = e.clientX;
-      this.newPos.y = e.clientY;
+      const im = this.images[idx]
 
-      const im = this.images[idx];
+      this.cursorPos.z = -45
+      this.expanded = this.uncompressZoom(im.src)
 
-      this.cursorPos.z = -45;
-      this.expanded = this.uncompressZoom(im.src);
-
-      const frame = this.$refs.frame;
-      const frameIn = this.$refs.framein[idx];
+      const frame = this.$refs.frame
+      const frameIn = this.$refs.framein[idx]
 
       // const frameWidth = frame.clientWidth;
-      const frameInWidth = frameIn.clientWidth;
+      const frameInWidth = frameIn.clientWidth
 
-      const scale = this.mobile ?
-        this.winHeight / frameIn.clientHeight :
-        this.zoomWidth / frameInWidth;
+      const scale = this.mobile
+        ? this.winHeight / frameIn.clientHeight
+        : this.zoomWidth / frameInWidth
 
-      const offLeft = frame.offsetLeft + frameIn.offsetLeft * scale;
-      const offTop = frame.offsetTop + frameIn.offsetTop * scale;
+      const offLeft = frame.offsetLeft + frameIn.offsetLeft * scale
+      const offTop = frame.offsetTop + frameIn.offsetTop * scale
 
-      const left = this.mobile ?
-        this.winWidth / 2 - offLeft - this.zoomWidth / 2 :
-        -offLeft - e.clientX / this.winWidth * this.xRatio / 100 * this.zoomWidth;
+      const left = this.mobile
+        ? this.winWidth / 2 - offLeft - this.zoomWidth / 2
+        : -offLeft - (((e.clientX / this.winWidth) * this.xRatio) / 100) * this.zoomWidth
 
-      const top = this.mobile ?
-        -offTop :
-        -offTop - e.clientY / this.winHeight * this.yRatio / 100 * this.zoomHeight;
+      const top = this.mobile
+        ? -offTop
+        : -offTop - (((e.clientY / this.winHeight) * this.yRatio) / 100) * this.zoomHeight
 
-      this.expIdx = idx;
-      this.prevZoom = this.imZoom[idx].transform;
+      this.expIdx = idx
+      this.prevZoom = this.imZoom[idx].transform
 
-      this.imZoom[idx].transform = `translateX(${left}px) translateY(${top}px) translateZ(0) scale(${scale})`;
+      this.imZoom[idx].transform =
+        `translateX(${left}px) translateY(${top}px) translateZ(0) scale(${scale})`
 
-      this.showMo = true;
-
+      this.showMo = true
     },
 
     collapseImage() {
+      this.showMo = false
+      this.showZoom = false
+      this.cursorPos.z = -45
+      this.expanded = null
+      this.offX = -50
+      this.offY = -50
+      this.deltaX = 0
+      this.deltaY = 0
 
-      this.showMo = false;
-      this.showZoom = false;
-      this.cursorPos.z = -45;
-      this.expanded = null;
-      this.offX = -50;
-      this.offY = -50;
-      this.deltaX = 0;
-      this.deltaY = 0;
+      this.imZoom[this.expIdx].transform = this.prevZoom
 
-      this.imZoom[this.expIdx].transform = this.prevZoom;
-
-      this.showingZoom = false;
-
+      this.showingZoom = false
     },
 
     momo(e) {
-      clearTimeout(this.tickTimeout);
+      clearTimeout(this.tickTimeout)
 
       this.newPos = {
         x: e.clientX,
-        y: e.clientY
-      };
+        y: e.clientY,
+      }
 
       if (!this.ticking) {
-        this.ticking = true;
-        this.updateCursor();
+        this.ticking = true
+        this.updateCursor()
 
         this.tickTimeout = setTimeout(() => {
-          this.ticking = false;
-        }, 650 * 3);
+          this.ticking = false
+        }, 650 * 3)
       }
     },
 
     updateCursor() {
-
-      this.cursorPos.x -= (this.cursorPos.x - (this.showMo ? this.newPos.x : this.winWidth / 2)) / 15;
-      this.cursorPos.y -= (this.cursorPos.y - (this.showMo ? this.newPos.y : this.winHeight / 2)) / 15;
+      this.cursorPos.x -=
+        (this.cursorPos.x - (this.showMo ? this.newPos.x : this.winWidth / 2)) / 15
+      this.cursorPos.y -=
+        (this.cursorPos.y - (this.showMo ? this.newPos.y : this.winHeight / 2)) / 15
 
       if (!this.mobile) {
-        this.deltaX = (this.cursorPos.x - this.winWidth / 2) / this.winWidth;
-        this.deltaY = (this.cursorPos.y - this.winHeight / 2) / this.winHeight;
+        this.deltaX = (this.cursorPos.x - this.winWidth / 2) / this.winWidth
+        this.deltaY = (this.cursorPos.y - this.winHeight / 2) / this.winHeight
 
-        this.offX = -50 - this.deltaX * this.xRatio;
-        this.offY = -50 - this.deltaY * this.yRatio;
+        this.offX = -50 - this.deltaX * this.xRatio
+        this.offY = -50 - this.deltaY * this.yRatio
       }
 
       if (this.ticking) {
         requestAnimationFrame(() => {
-          this.updateCursor();
-        });
+          this.updateCursor()
+        })
       }
-
     },
 
     imDims() {
-
-      this.showZoom = true;
-      this.cursorPos.z = 0;
-
+      this.showZoom = true
+      this.cursorPos.z = 0
     },
 
     uncompressZoom(src) {
-      const compsrc = src.replace('auto=compress,format', 'auto=compress,format&cs=srgb&q=70');
-      const qidx = compsrc.indexOf('&w=');
+      const compsrc = src.replace('auto=compress,format', 'auto=compress,format&cs=srgb&q=70')
+      const qidx = compsrc.indexOf('&w=')
       if (qidx > 0) {
-        return compsrc.substring(0, qidx) + `&w=${Math.min(1920, this.zoomWidth)}`;
+        return compsrc.substring(0, qidx) + `&w=${Math.min(1920, this.zoomWidth)}`
       }
-      return compsrc;
-    }
-  }
-
-};
-
+      return compsrc
+    },
+  },
+}
 </script>
 
 <style lang="stylus">
@@ -860,5 +742,4 @@ export default {
     }
   }
 }
-
 </style>

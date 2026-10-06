@@ -1,17 +1,15 @@
-import { defineStore } from 'pinia';
-import Client from 'shopify-buy';
+import { defineStore } from 'pinia'
 
-let client = null;
+let client = null
 
 export const useShopifyStore = defineStore('shopify', {
-
   state: () => ({
     shopify: null,
     checkout: null,
     cart: null,
     collections: null,
     products: null,
-    cartOpen: false
+    cartOpen: false,
   }),
 
   getters: {
@@ -21,30 +19,27 @@ export const useShopifyStore = defineStore('shopify', {
     // collections: (state) => state.collections,
     // products: (state) => state.products,
     // cartOpen: (state) => state.cartOpen,
-    hasItems: (state) => state.checkout?.lineItems ?
-      state.checkout.lineItems.length > 0 : false
+    hasItems: (state) => (state.checkout?.lineItems ? state.checkout.lineItems.length > 0 : false),
   },
 
   actions: {
-
     initShopify() {
       client = Client.buildClient({
         domain: 'ritavinieris.myshopify.com',
-        storefrontAccessToken: 'bf263151f22854c6fdc8ae448b05d3ea'
-      });
-      this.shopify = client;
+        storefrontAccessToken: 'bf263151f22854c6fdc8ae448b05d3ea',
+      })
+      this.shopify = client
     },
 
     initCheckout() {
       client.checkout.create().then((checkout) => {
-        this.checkout = checkout;
+        this.checkout = checkout
         // VueCookie.set('ch', checkout.id, 1);
         localStorage.addItem('ch', checkout.id)
-      });
+      })
     },
 
     fetchCheckout() {
-
       // if (!VueCookie.get('ch')) {
       //   context.dispatch('initCheckout');
       //   return;
@@ -57,19 +52,18 @@ export const useShopifyStore = defineStore('shopify', {
       //     context.commit('addCheckout', checkout);
       //   }
       // }).catch(() => {
-        this.initCheckout();
+      this.initCheckout()
       // });
-
     },
 
     addCheckout(checkout) {
-      this.checkout = checkout;
+      this.checkout = checkout
     },
 
     fetchProducts() {
       client.product.fetchAll(200).then((products) => {
-        this.products = products;
-      });
+        this.products = products
+      })
       // return new Promise((resolve) => {
       //   client.collection.fetchByHandle('site').then((collection) => {
       //     context.commit('addProducts', collection.products);
@@ -80,17 +74,16 @@ export const useShopifyStore = defineStore('shopify', {
 
     fetchCollections() {
       client.collection.fetchAllWithProducts().then((collections) => {
-        this.collections = collections;
-      });
+        this.collections = collections
+      })
     },
 
     addCart(cart) {
-      this.cart = cart;
+      this.cart = cart
     },
 
     toggleCart(open) {
-      this.cartOpen = open;
-    }
-  }
-
+      this.cartOpen = open
+    },
+  },
 })

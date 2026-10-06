@@ -2,68 +2,59 @@
   <div class="sniffer" />
 </template>
 
-<script>
-
-import { mapActions } from 'pinia'
+<script setup>
+import { onBeforeUnmount, onMounted, reactive, watch } from 'vue'
 import { useDeviceStore } from '@/stores/device'
 
-export default {
+const deviceStore = useDeviceStore()
 
-  data() {
-    const device = {
+const device = reactive({
+  win: {
+    x: 500,
+    y: 800,
+  },
+  mouse: false,
+  portrait: false,
+})
+
+watch(
+  device,
+  () => {
+    deviceStore.updateDevice({
       win: {
-        // x: window.innerWidth,
-        // y: window.innerHeight,
-        x: 1440,
-        y: 900
+        x: device.win.x,
+        y: device.win.y,
       },
-      mouse: false
-    }
-
-    return {
-      device
-    }
+      mouse: device.mouse,
+      portrait: device.portrait,
+    })
   },
+  { immediate: true },
+)
 
-  watch: {
-    device: {
-      immediate: true,
-      handler(device) {
-        this.updateDevice(device)
-      }
-    }
-  },
-
-  mounted() {
-    window.addEventListener('mousemove', this.mousestart, { passive: true })
-    window.addEventListener('resize', this.resize, { passive: true })
-  },
-
-  beforeUnmount() {
-    window.removeEventListener('mousemove', this.mousestart, { passive: true })
-    window.removeEventListener('resize', this.resize, { passive: true })
-  },
-
-  methods: {
-    ...mapActions(useDeviceStore, [
-      'updateDevice'
-    ]),
-
-    mousestart() {
-      this.device.mouse = true
-      window.removeEventListener('mousemove', this.mousestart, { passive: true })
-    },
-
-    resize() {
-      this.device.win = {
-        x: window.innerWidth,
-        y: window.innerHeight
-      }
-      this.device.portrait = window.innerWidth < window.innerHeight
-    }
-  }
+function mousestart() {
+  device.mouse = true
+  window.removeEventListener('mousemove', mousestart, { passive: true })
 }
 
+function resize() {
+  device.win = {
+    x: window.innerWidth,
+    y: window.innerHeight,
+  }
+  device.portrait = window.innerWidth < window.innerHeight
+}
+
+onMounted(() => {
+  window.addEventListener('mousemove', mousestart, { passive: true })
+  window.addEventListener('resize', resize, { passive: true })
+  resize()
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('mousemove', mousestart, { passive: true })
+  window.removeEventListener('resize', resize, { passive: true })
+})
 </script>
 
 <style lang="stylus">
@@ -72,5 +63,4 @@ export default {
   display none
   pointer-events none
 }
-
 </style>

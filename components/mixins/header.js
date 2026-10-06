@@ -1,49 +1,34 @@
 import { mapState, mapActions } from 'pinia'
 import { useDeviceStore } from '~~/stores/device'
 import { useSearchStore } from '~~/stores/search'
-import { useShopifyStore } from '~~/stores/shopify'
 
 import Lockup from '../svg/Lockup.vue'
-import CartIcon from '../ui/CartIcon.vue'
 import SearchBar from '../modules/SearchBar.vue'
 
 export default {
-
   components: {
     Lockup,
-    CartIcon,
-    SearchBar
+    SearchBar,
   },
 
   props: {
     top: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   },
 
   data() {
     return {
       navLinks: [],
       contactLinks: [],
-      show: true
+      show: true,
     }
   },
 
   computed: {
-    ...mapState(useDeviceStore, [
-      'win',
-    ]),
-    ...mapState(useShopifyStore, [
-      'cartOpen',
-    ]),
-    ...mapState(useSearchStore, [
-      'searchOpen'
-    ]),
-
-    showStoreNoti() {
-      return this.$route.name === 'veils' && this.top && !this.cartOpen
-    }
+    ...mapState(useDeviceStore, ['win']),
+    ...mapState(useSearchStore, ['searchOpen']),
   },
 
   watch: {
@@ -51,16 +36,14 @@ export default {
       immediate: true,
       handler() {
         this.$nextTick(this.logoDims)
-      }
-    }
+      },
+    },
   },
 
   created() {
     this.$prismic.client.getByType('menu').then((res) => {
-
       this.navLinks = this.mapPris(res.results[0].data.nav_links)
       this.contactLinks = this.mapPris(res.results[0].data.contact_links)
-
     })
   },
 
@@ -75,12 +58,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(useShopifyStore, [
-      'toggleCart',
-    ]),
-    ...mapActions(useSearchStore, [
-      'toggleSearch'
-    ]),
+    ...mapActions(useSearchStore, ['toggleSearch']),
 
     hideLogo() {
       this.show = false
@@ -96,12 +74,12 @@ export default {
     },
 
     mapPris(links) {
-
       const prisLinks = links.map((l) => ({
         head: l.head,
         route: l.page.uid,
         name: l.name,
-        section: l.section
+        section: l.section,
+        ext: l.external_link,
       }))
 
       const mapLinks = []
@@ -110,33 +88,34 @@ export default {
       for (let l of prisLinks) {
         if (!l.head) {
           mapIdx++
-          l = l.route === 'alyne' || l.route === 'rivini' ? {
-            name: l.name,
-            route: l.route,
-            class: 'just-drop',
-            sub: [
-              {
-                name: 'Home',
-                route: l.route
-              }
-            ]
-          } : {
-            name: l.name,
-            route: l.route
-          }
+          l =
+            l.route === 'alyne' || l.route === 'rivini'
+              ? {
+                  name: l.name,
+                  route: l.route,
+                  class: 'just-drop',
+                  sub: [
+                    {
+                      name: 'Home',
+                      route: l.route,
+                    },
+                  ],
+                }
+              : {
+                  name: l.name,
+                  route: l.route,
+                  ext: l.ext,
+                }
           mapLinks.push(l)
-        } else
-        if (mapLinks[mapIdx].sub) {
+        } else if (mapLinks[mapIdx].sub) {
           mapLinks[mapIdx].sub.push({
             name: l.name,
-            route: l.route + (l.section ? `#${l.section.replace(/\s/g, '-').toLowerCase()}` : '')
+            route: l.route + (l.section ? `#${l.section.replace(/\s/g, '-').toLowerCase()}` : ''),
           })
         }
       }
 
       return mapLinks
-
-    }
-  }
-
+    },
+  },
 }

@@ -1,10 +1,9 @@
 import { defineStore } from 'pinia'
 
 export const useUiStore = defineStore('ui', {
-
   state: () => ({
     galleryOpen: false,
-    scrollMarks: []
+    scrollMarks: [],
   }),
 
   // getters: {
@@ -14,34 +13,33 @@ export const useUiStore = defineStore('ui', {
 
   actions: {
     toggleGallery(open) {
-      this.galleryOpen = open;
+      this.galleryOpen = open
     },
 
     addScrollMark(mark) {
-      const marks = this.scrollMarks;
+      const marks = this.scrollMarks
 
-      const midx = marks.findIndex((m) => m.slug === mark.slug);
+      const midx = marks.findIndex((m) => m.slug === mark.slug)
 
       if (midx > -1) {
-        marks.splice(midx, 1, mark);
+        marks.splice(midx, 1, mark)
       } else {
-        marks.push(mark);
+        marks.push(mark)
       }
 
-      this.scrollMarks = marks;
+      this.scrollMarks = marks
     },
 
     removeScrollMark(mark) {
-      const marks = this.scrollMarks;
+      const marks = this.scrollMarks
 
-      const midx = marks.findIndex((m) => m.slug === mark.slug);
+      const midx = marks.findIndex((m) => m.slug === mark.slug)
 
       if (midx > -1) {
-        marks.splice(midx, 1);
+        marks.splice(midx, 1)
       }
 
-      this.scrollMarks = marks;
-    }
-  }
-
+      this.scrollMarks = marks
+    },
+  },
 })

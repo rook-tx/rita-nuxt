@@ -1,24 +1,102 @@
 <script setup>
-import { asText, isFilled } from '@prismicio/helpers'
+import { asText, isFilled } from '@prismicio/client'
 import { getSliceComponentProps } from '@prismicio/vue'
+import { useUiStore } from '@/stores/ui'
+import GalleryVideo from '@/slices/GalleryVideo/index.vue'
 
-defineProps({
-  ...getSliceComponentProps([ 'slice' ])
+const uiStore = useUiStore()
+const { toggleGallery } = uiStore
+
+const props = defineProps({
+  ...getSliceComponentProps(['slice', 'index', 'slices', 'context']),
 })
 
-const galleryIdx = 0
-const zooming = -1
-const galleries = []
+const galleryIdx = ref(-1)
+const zooming = ref(-1)
+const galleries = ref([])
 // const images = []
 
-function openGallery(idx, e) {
-  const top = e.target.offsetTop + this.$el.offsetTop - this.scroll
+const overlay = useTemplateRef('overlay')
 
-  this.galleryIdx = idx
-  this.zooming = idx
-  this.$nextTick(this.$refs.overlay.setScale(e, top))
+function extractGalleries(items) {
+  const galleries = []
+
+  items.forEach((item, idx) => {
+    const images = [item.image.url]
+
+    if (item.alt_image?.url) {
+      images.push(item.alt_image.url)
+    }
+    if (item.alt_image_2?.url) {
+      images.push(item.alt_image_2.url)
+    }
+    if (item.alt_image_3?.url) {
+      images.push(item.alt_image_3.url)
+    }
+    if (item.alt_image_4?.url) {
+      images.push(item.alt_image_4.url)
+    }
+
+    let section
+
+    if (props.slice?.primary?.headline) {
+      section = asText(props.slice.primary.headline)
+    }
+
+    galleries.push({
+      section: section,
+      images: images,
+      headline: asText(item.caption),
+      copy: item.blurb,
+      gidx: idx,
+      objs: [item.image, item.alt_image, item.alt_image_2, item.alt_image_3, item.alt_image_4],
+    })
+  })
+
+  return galleries
 }
 
+galleries.value = extractGalleries(props.slice.items)
+
+function openGallery(idx, e) {
+  // const top = e.target.offsetTop + this.$el.offsetTop - this.scroll
+
+  galleryIdx.value = idx
+  zooming.value = idx
+  content.value = galleries.value[idx]
+  // this.$nextTick(this.$refs.overlay.setScale(e, top))
+}
+
+function closeGallery() {
+  toggleGallery(false)
+  galleryIdx.value = -1
+  zooming.value = -1
+  nextTick(() => {
+    if (overlay.value) {
+      overlay.value.open = false
+    }
+  })
+}
+
+function prevSet() {
+  if (galleryIdx.value - 1 < 0) {
+    closeGallery()
+    return
+  }
+
+  galleryIdx.value--
+}
+
+function nextSet() {
+  if (galleryIdx.value + 1 > galleries.value.length) {
+    closeGallery()
+    return
+  }
+
+  galleryIdx.value++
+}
+
+const content = computed(() => galleries.value[galleryIdx.value] || null)
 </script>
 
 <template>
@@ -28,49 +106,39 @@ function openGallery(idx, e) {
         v-for="(im, idx) in slice.items"
         :id="asText(im.caption)"
         :key="idx"
-        :class="[ 'image', { zooming: zooming === idx }]"
+        :class="['image', { zooming: zooming === idx }]"
       >
         <div class="content">
-          <button
-            type="button"
-            title="Open image gallery"
-            @click.left="openGallery(idx, $event)"
-          >
+          <button type="button" title="Open image gallery" @click.left="openGallery(idx, $event)">
             <!-- :src="im.src"
           :alt="im.alt"
           :scroll="scroll"
           :inview="inview"
           :p-top="elTop" -->
-            <modules-plax-image
-              :img-obj="im.image"
-            />
+            <modules-plax-image :img-obj="im.image" />
           </button>
 
-          <prismic-rich-text
-            v-if="im.caption"
-            class="caption"
-            :field="im.caption"
-          />
+          <div v-if="im.caption" class="caption"><prismic-rich-text :field="im.caption" /></div>
         </div>
       </div>
     </div>
 
     <gallery-video
       v-if="isFilled.link(slice.primary.video_src)"
-      :data="slice.primary"
+      :slice="slice"
+      :index="index"
+      :slices="slices"
+      :context="context"
     />
     <!-- :scroll="scroll" -->
 
-    <div
-      v-if="isFilled.richText(slice.primary.copy)"
-      class="copy"
-    >
+    <div v-if="isFilled.richText(slice.primary.copy)" class="copy">
       <prismic-rich-text :field="slice.primary.copy" />
     </div>
 
     <modules-zoom-overlay
       ref="overlay"
-      :content="galleries[galleryIdx]"
+      :content="content"
       @closeGallery="closeGallery"
       @prevSet="prevSet"
       @nextSet="nextSet"
@@ -370,5 +438,4 @@ export default {
     }
   }
 }
-
 </style>

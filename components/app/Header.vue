@@ -1,22 +1,8 @@
 <template>
   <header>
     <div class="header">
-      <transition
-        appear
-        duration="650"
-      >
-        <search-bar
-          v-if="searchOpen"
-        />
-      </transition>
-
-      <transition>
-        <div
-          v-if="showStoreNoti"
-          class="store-noti"
-        >
-          Our veils are now shoppable online!
-        </div>
+      <transition appear duration="650">
+        <search-bar v-if="searchOpen" />
       </transition>
 
       <nav>
@@ -25,28 +11,27 @@
             <li
               v-for="(link, idx) in navLinks"
               :key="idx"
-              :class="[ 'link', link.class ? link.class : null ]"
+              :class="['link', link.class ? link.class : null]"
             >
+              <a
+                v-if="link.ext && link.ext.url"
+                :href="link.ext.url"
+                class="drop-head"
+                target="_blank"
+                v-html="link.name"
+              />
               <nuxt-link
+                v-else
                 :to="link.route"
                 class="drop-head"
                 @click.left="navClick(link.route)"
               >
                 {{ link.name }}
               </nuxt-link>
-              <div
-                v-if="link.sub"
-                class="drop"
-              >
+              <div v-if="link.sub" class="drop">
                 <ul>
-                  <li
-                    v-for="(sublink, sidx) in link.sub"
-                    :key="sidx"
-                  >
-                    <nuxt-link
-                      :to="sublink.route"
-                      @click.left="navClick(sublink.route)"
-                    >
+                  <li v-for="(sublink, sidx) in link.sub" :key="sidx">
+                    <nuxt-link :to="sublink.route" @click.left="navClick(sublink.route)">
                       {{ sublink.name }}
                     </nuxt-link>
                   </li>
@@ -55,68 +40,36 @@
             </li>
           </div>
 
-          <div :class="[ 'lockup-badge', show ? 'show' : 'hide' ]">
-            <li
-              class="home"
-            >
-              <nuxt-link
-                to="/"
-                title="Home"
-                @click.left="navClick()"
-              >
-                <lockup
-                  ref="lockup"
-                  focusable="false"
-                />
+          <div :class="['lockup-badge', show ? 'show' : 'hide']">
+            <li class="home">
+              <nuxt-link to="/" title="Home" @click.left="navClick()">
+                <lockup ref="lockup" focusable="false" />
               </nuxt-link>
             </li>
           </div>
 
           <div class="links">
             <li class="link">
-              <button
-                type="button"
-                class="drop-head"
-                @click.left="toggleSearch"
-              >
-                Search
-              </button>
+              <button type="button" class="drop-head" @click.left="toggleSearch">Search</button>
             </li>
 
             <li
               v-for="(link, idx) in contactLinks"
               :key="idx"
-              :class="[ 'link', link.class ? link.class : null ]"
+              :class="['link', link.class ? link.class : null]"
             >
-              <nuxt-link
-                :to="link.route"
-                class="drop-head"
-                @click.left="navClick(link.route)"
-              >
+              <nuxt-link :to="link.route" class="drop-head" @click.left="navClick(link.route)">
                 {{ link.name }}
               </nuxt-link>
-              <div
-                v-if="link.sub"
-                class="drop"
-              >
+              <div v-if="link.sub" class="drop">
                 <ul>
-                  <li
-                    v-for="(sublink, sidx) in link.sub"
-                    :key="sidx"
-                  >
-                    <nuxt-link
-                      :to="sublink.route"
-                      @click.left="navClick(sublink.route)"
-                    >
+                  <li v-for="(sublink, sidx) in link.sub" :key="sidx">
+                    <nuxt-link :to="sublink.route" @click.left="navClick(sublink.route)">
                       {{ sublink.name }}
                     </nuxt-link>
                   </li>
                 </ul>
               </div>
-            </li>
-
-            <li :class="[ 'link', 'cart', $route.name === 'cart' || $route.name === 'veils' ? 'open' : 'closed' ]">
-              <cart-icon />
             </li>
           </div>
         </ul>
@@ -126,32 +79,19 @@
 </template>
 
 <script>
-
-import { mapState } from 'pinia'
-import { useShopifyStore } from '~~/stores/shopify'
-
 import header from '../mixins/header'
 
 export default {
-
-  mixins: [
-    header
-  ],
-
-  computed: {
-    ...mapState(useShopifyStore, [
-      'checkout'
-    ])
-  },
+  mixins: [header],
 
   methods: {
     mapPris(links) {
-
       const prisLinks = links.map((l) => ({
         head: l.head,
         route: l.page.uid,
         name: l.name,
-        section: l.section
+        section: l.section,
+        ext: l.external_link,
       }))
 
       const mapLinks = []
@@ -163,35 +103,28 @@ export default {
           l = {
             name: l.name,
             route: l.route,
-            sub: []
+            ext: l.ext,
+            sub: [],
           }
           mapLinks.push(l)
         } else {
           mapLinks[mapIdx].sub.push({
             name: l.name,
-            route: l.route + (l.section ? `#${l.section.replace(/\s/g, '-').toLowerCase()}` : '')
+            route: l.route + (l.section ? `#${l.section.replace(/\s/g, '-').toLowerCase()}` : ''),
           })
         }
       }
 
       return mapLinks
-
     },
 
     navClick(route) {
-
-      if (route && route === this.$route.params.slug) {
-        // this.$emit('topScroll');
-      } else if (!route && this.$route.name === 'home') {
+      if (!route && this.$route.name === 'home') {
         this.$emit('topScroll')
       }
-
-      this.toggleCart(false)
-
-    }
-  }
+    },
+  },
 }
-
 </script>
 
 <style lang="stylus">
@@ -251,18 +184,12 @@ export default {
     &:focus,
     &:focus-within{
       .drop-head {
-        // opacity .5
-
         &::after {
           transform-origin 0 0
           transform scaleX(1)
         }
       }
     }
-
-    // > .nuxt-link-active {
-    //   opacity .5
-    // }
   }
 
   .home {
@@ -298,10 +225,6 @@ export default {
         opacity 1
         transform translateY(0)
       }
-
-      // .nuxt-link-exact-active {
-      //   opacity .5
-      // }
     }
   }
 
@@ -358,10 +281,6 @@ export default {
       transform translateY(3px)
       transition opacity ($beat / 2) $easeOutCubic
       transition-property opacity, transform
-
-      // &:hover {
-      //   opacity .5
-      // }
     }
   }
 
@@ -392,5 +311,4 @@ export default {
     }
   }
 }
-
 </style>

@@ -3,43 +3,28 @@
     <div class="search-header">
       <input
         v-model="searchTerm"
-        :class="[ 'search-input', { 'search-active': searchTerm }]"
+        :class="['search-input', { 'search-active': searchTerm }]"
         type="search"
         placeholder="Search by dress name, collection, etc."
         @input="checkClear"
         @change="getResults"
-      >
+      />
 
-      <button
-        class="active-close"
-        @click.left="activeClose"
-      >
+      <button class="active-close" @click.left="activeClose">
         <close />
       </button>
     </div>
 
-    <div
-      class="results-bg"
-      @click="closeSearch"
-    />
+    <div class="results-bg" @click="closeSearch" />
 
-    <div
-      v-show="lastSearch"
-      ref="drawer"
-      class="results-drawer"
-      @scroll="onscroll"
-    >
+    <div v-show="lastSearch" ref="drawer" class="results-drawer" @scroll="onscroll">
       <div class="results-count">
         <span>{{ results.length }} search results found for “{{ lastSearch }}”</span>
       </div>
 
       <div class="results-wrap">
         <ol class="search-results">
-          <li
-            v-for="(result, idx) in results"
-            :key="result.id + idx"
-            class="search-result"
-          >
+          <li v-for="(result, idx) in results" :key="result.id + idx" class="search-result">
             <search-item
               :scroll="scroll"
               :result="result"
@@ -63,20 +48,14 @@
 </template>
 
 <script>
-
-import search from '../mixins/search';
-import Close from '../svg/Close.vue';
+import search from '../mixins/search'
+import Close from '../svg/Close.vue'
 
 export default {
-
   components: { Close },
 
-  mixins: [
-    search
-  ]
-
-};
-
+  mixins: [search],
+}
 </script>
 
 <style lang="stylus">
@@ -130,7 +109,7 @@ export default {
 
     &::-webkit-search-cancel-button {
       appearance none
-      background url('/static/close.svg') no-repeat
+      background url('/close.svg') no-repeat
       background-size contain
       height 18px
       width 18px
@@ -267,5 +246,4 @@ export default {
     background $black
   }
 }
-
 </style>

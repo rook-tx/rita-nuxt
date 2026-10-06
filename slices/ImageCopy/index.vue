@@ -1,37 +1,29 @@
 <script setup>
-import { isFilled } from '@prismicio/helpers'
+import { isFilled } from '@prismicio/client'
 import { getSliceComponentProps } from '@prismicio/vue'
 
 const props = defineProps({
-  ...getSliceComponentProps([ 'slice' ])
+  ...getSliceComponentProps(['slice']),
 })
 
-const layout = isFilled.keyText(props.slice.primary.layout) ? props.slice.primary.layout.toLowerCase().replace(/\s/g, '-') : 'image-left'
-
+const layout = isFilled.keyText(props.slice.primary.layout)
+  ? props.slice.primary.layout.toLowerCase().replace(/\s/g, '-')
+  : 'image-left'
 </script>
 
 <template>
   <div class="image-copy">
-    <div :class="[ 'wrap', layout ]">
-      <div
-        v-if="slice.primary.headline"
-        class="headline"
-      >
-        <prismic-rich-text
-          :field="slice.primary.headline"
-        />
+    <div :class="['wrap', layout]">
+      <div v-if="slice.primary.headline" class="headline">
+        <prismic-rich-text :field="slice.primary.headline" />
       </div>
 
-      <div
-        class="image"
-      >
+      <div class="image">
         <!-- :src="src"
       :scroll="scroll"
       :inview="inview"
       :p-top="elTop" -->
-        <modules-plax-image
-          :img-obj="slice.primary.image"
-        />
+        <modules-plax-image :img-obj="slice.primary.image" />
 
         <!-- <div
           v-if="signature"
@@ -45,10 +37,7 @@ const layout = isFilled.keyText(props.slice.primary.layout) ? props.slice.primar
       </div>
 
       <div class="copy">
-        <prismic-rich-text
-          v-if="slice.primary.copy"
-          :field="slice.primary.copy"
-        />
+        <prismic-rich-text v-if="slice.primary.copy" :field="slice.primary.copy" />
       </div>
     </div>
   </div>
@@ -193,5 +182,4 @@ export default {
     }
   }
 }
-
 </style>
