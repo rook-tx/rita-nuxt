@@ -38,10 +38,10 @@ defineProps({
       </div>
     </div>
     <div
-      v-if="copy"
+      v-if="slice.copy"
       class="copy"
     >
-      <prismic-rich-text :field="copy" />
+      <prismic-rich-text :field="slice.copy" />
     </div>
   </div>
 </template>

@@ -63,7 +63,6 @@ function openGallery(idx, e) {
 
   galleryIdx.value = idx
   zooming.value = idx
-  content.value = galleries.value[idx]
   // this.$nextTick(this.$refs.overlay.setScale(e, top))
 }
 

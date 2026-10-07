@@ -4,15 +4,14 @@ const deviceStore = useDeviceStore()
 const { mobile } = storeToRefs(deviceStore)
 import Header from '@/components/app/Header.vue'
 import HeaderMobile from '@/components/app/HeaderMobile.vue'
+import Footer from '@/components/app/Footer.vue'
 </script>
 
 <template>
   <Header v-if="!mobile" />
-  <HeaderMobile v-if="mobile" />
-  <div class="page">
-    <slot />
-    <app-footer />
-  </div>
+  <HeaderMobile v-else />
+  <slot />
+  <Footer />
 </template>
 
 <style lang="stylus">

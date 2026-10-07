@@ -84,6 +84,9 @@ export default defineNuxtConfig({
           crossorigin: '',
           async: true,
         },
+        {
+          src: 'https://npmcdn.com/leaflet-geometryutil',
+        },
       ],
     },
   },
@@ -98,7 +101,13 @@ export default defineNuxtConfig({
 
   vite: {
     optimizeDeps: {
-      include: ['@prismicio/client', '@vue/devtools-core', '@vue/devtools-kit', 'fuse.js'],
+      include: [
+        '@prismicio/client',
+        '@vue/devtools-core',
+        '@vue/devtools-kit',
+        'fuse.js',
+        'dayjs', //(CJS)
+      ],
     },
   },
 })

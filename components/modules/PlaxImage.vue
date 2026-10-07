@@ -34,54 +34,52 @@
         </div>
       </transition> -->
 
-      <prismic-image :field="imgObj" />
+      <prismic-image :field="imgObj" loading="lazy" />
     </div>
   </div>
 </template>
 
 <script>
-
 import { mapState } from 'pinia'
-import { useDeviceStore } from '~~/stores/device'
+import { useDeviceStore } from '@/stores/device'
 
 export default {
-
   props: {
     scroll: {
       type: Number,
-      default: 0
+      default: 0,
     },
 
     pTop: {
       type: Number,
       // default: window.innerHeight
-      default: 900
+      default: 900,
     },
 
     imgObj: {
       type: Object,
-      default: null
+      default: null,
     },
 
     src: {
       type: String,
-      default: null
+      default: null,
     },
 
     alt: {
       type: String,
-      default: null
+      default: null,
     },
 
     inview: {
       type: Boolean,
-      default: false
+      default: false,
     },
 
     parent: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
 
   data() {
@@ -102,14 +100,12 @@ export default {
       // lastScroll: Number(0),
       delta: 0.5,
       // showAlt: false,
-      dimQuery: null
+      dimQuery: null,
     }
   },
 
   computed: {
-    ...mapState(useDeviceStore, [
-      'mobile'
-    ]),
+    ...mapState(useDeviceStore, ['mobile']),
     // ...mapGetters([
     //   'win',
     //   'winHeight',
@@ -121,20 +117,20 @@ export default {
 
     inplax() {
       return (this.delta - 0.5) * (this.mobile ? 12 : 18)
-    }
+    },
   },
 
   watch: {
     pTop: {
       handler() {
         this.updateDims()
-      }
+      },
     },
 
     inview: {
       handler() {
         this.updateDims()
-      }
+      },
     },
 
     // scroll: {
@@ -152,7 +148,7 @@ export default {
         if (this.alt) {
           this.uncompressAlt = this.uncompress(this.alt)
         }
-      }
+      },
     },
 
     imgObj: {
@@ -161,8 +157,8 @@ export default {
         if (obj && obj.dimensions) {
           this.ar = obj.dimensions.height / obj.dimensions.width
         }
-      }
-    }
+      },
+    },
   },
 
   methods: {
@@ -170,23 +166,26 @@ export default {
       const compsrc = src.replace('auto=compress,format', 'auto=compress,format&q=70&cs=srgb')
       const qidx = compsrc.indexOf('&w=')
       if (this.dimQuery && qidx > 0) {
-        return compsrc.substring(0, qidx) + this.dimQuery + (this.nanoIm && this.nano ? '&dpr=2' : '')
+        return (
+          compsrc.substring(0, qidx) + this.dimQuery + (this.nanoIm && this.nano ? '&dpr=2' : '')
+        )
       }
       return compsrc
     },
 
     updateDims() {
-
       this.elTop =
-        (this.parent ? this.$el.parentNode.offsetTop + this.$el.offsetParent.offsetTop : this.$el.offsetTop)
-        + this.pTop
+        (this.parent
+          ? this.$el.parentNode.offsetTop + this.$el.offsetParent.offsetTop
+          : this.$el.offsetTop) + this.pTop
       this.top = this.elTop - this.winHeight / 4
       this.elHeight = this.$el.clientHeight
       this.elEnd = this.elTop + this.elHeight + this.winHeight
       this.bottom = this.elEnd + this.winHeight / 3
 
-      this.scale = (this.mobile ? 1 : 1.02) +
-        Math.max(0, (this.winHeight - this.elHeight) / this.winHeight * 20 / 100)
+      this.scale =
+        (this.mobile ? 1 : 1.02) +
+        Math.max(0, (((this.winHeight - this.elHeight) / this.winHeight) * 20) / 100)
 
       this.travel = this.winHeight + this.elHeight
 
@@ -196,7 +195,6 @@ export default {
       }
 
       this.$nextTick(this.diffScroll(this.scroll))
-
     },
 
     diffScroll(scroll) {
@@ -210,11 +208,9 @@ export default {
     onload(e) {
       this.ar = e.target.naturalHeight / e.target.naturalWidth
       this.ready = true
-    }
-  }
-
+    },
+  },
 }
-
 </script>
 
 <style lang="stylus">
@@ -292,5 +288,4 @@ $easeIm = cubic-bezier(0.455, 0.03, 0.515, 0.955)
     background lighten($black, 1%)
   }
 }
-
 </style>

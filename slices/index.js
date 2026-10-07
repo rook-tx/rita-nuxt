@@ -11,6 +11,7 @@ import ImageIndex from './ImageIndex'
 import ImageWall from './ImageWall'
 import LandingHero from './LandingHero'
 import LargeImageArray from './LargeImageArray'
+import PostIndex from './PostIndex'
 import StoreMap from './StoreMap'
 
 export {
@@ -27,6 +28,7 @@ export {
   ImageWall,
   LandingHero,
   LargeImageArray,
+  PostIndex,
   StoreMap,
 }
 
@@ -44,5 +46,6 @@ export const components = {
   image_wall: ImageWall,
   landing_hero: LandingHero,
   large_image_array: LargeImageArray,
+  post_index: PostIndex,
   store_map: StoreMap,
 }

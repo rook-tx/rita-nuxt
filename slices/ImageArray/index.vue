@@ -32,6 +32,7 @@
 
 <script>
 import { getSliceComponentProps } from '@prismicio/vue'
+import { asText } from '@prismicio/client'
 
 // import parallax from '../mixins/parallax.js'
 
@@ -152,9 +153,9 @@ export default {
       })
 
       galleries.push({
-        section: this.$prismic.richTextAsPlain(section),
+        section: asText(section),
         images: images,
-        headline: this.$prismic.richTextAsPlain(caption),
+        headline: asText(caption),
         copy: caption,
       })
 

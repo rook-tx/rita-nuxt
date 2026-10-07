@@ -26,9 +26,10 @@
 </template>
 
 <script>
-// import { mapActions } from 'vuex'
+import { mapActions } from 'pinia'
 
 import { getSliceComponentProps } from '@prismicio/vue'
+import { useUiStore } from '@/stores/ui'
 // import cmsProps from '../mixins/cms-props.js'
 // import parallax from '../mixins/parallax.js'
 
@@ -85,7 +86,7 @@ export default {
   },
 
   methods: {
-    // ...mapActions(['addScrollMark', 'removeScrollMark']),
+    ...mapActions(useUiStore, ['addScrollMark', 'removeScrollMark']),
 
     diffScroll(scroll) {
       this.inview = this.elTop < scroll && this.elEnd > scroll
