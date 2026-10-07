@@ -6,9 +6,13 @@
         <p v-else-if="copy" v-html="copy" />
       </div>
 
-      <div v-for="(im, idx) in images" :key="idx" class="image">
+      <div v-for="(im, idx) in slice.items" :key="idx" class="image">
         <button type="button" title="Open image gallery" @click.left="openGallery(idx, $event)">
-          <plax-img :src="im.src" :scroll="scroll" :inview="inview" :p-top="elTop" :img-obj="im" />
+          <!-- :src="im.src"
+          :scroll="scroll"
+          :inview="inview"
+          :p-top="elTop" -->
+          <modules-plax-image :img-obj="im.image" />
         </button>
 
         <div class="caption">

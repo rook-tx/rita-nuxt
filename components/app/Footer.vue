@@ -134,14 +134,14 @@
 
       <div v-if="!mobile" class="copy-row">
         <div class="copy">
-          <span class="body2">&copy; 2022 Rita Vinieris</span>
+          <span class="body2">&copy; 1995&ndash;2026 Rita Vinieris</span>
         </div>
 
         <div class="terms">
           <div class="body2">
-            <nuxt-link to="/shipping"> Shipping Policy </nuxt-link> |
-            <nuxt-link to="/terms"> Terms &amp; Conditions </nuxt-link> |
-            <nuxt-link to="/privacy"> Privacy Policy </nuxt-link>
+            <nuxt-link to="/shipping">Shipping Policy</nuxt-link> |
+            <nuxt-link to="/terms">Terms &amp; Conditions</nuxt-link> |
+            <nuxt-link to="/privacy">Privacy Policy</nuxt-link>
           </div>
         </div>
       </div>
@@ -155,7 +155,7 @@
 
 <script>
 import { mapState } from 'pinia'
-import { useDeviceStore } from '~~/stores/device'
+import { useDeviceStore } from '@/stores/device'
 
 export default {
   data() {

@@ -3,6 +3,7 @@ import BannerImageCopy from './BannerImageCopy'
 import BasicCopy from './BasicCopy'
 import BasicHero from './BasicHero'
 import Bespoke from './Bespoke'
+import BookingForm from './BookingForm'
 import GalleryArray from './GalleryArray'
 import GalleryIndex from './GalleryIndex'
 import ImageArray from './ImageArray'
@@ -11,6 +12,7 @@ import ImageIndex from './ImageIndex'
 import ImageWall from './ImageWall'
 import LandingHero from './LandingHero'
 import LargeImageArray from './LargeImageArray'
+import LittleLargeImage from './LittleLargeImage'
 import PostIndex from './PostIndex'
 import StoreMap from './StoreMap'
 
@@ -20,6 +22,7 @@ export {
   BasicCopy,
   BasicHero,
   Bespoke,
+  BookingForm,
   GalleryArray,
   GalleryIndex,
   ImageArray,
@@ -28,6 +31,7 @@ export {
   ImageWall,
   LandingHero,
   LargeImageArray,
+  LittleLargeImage,
   PostIndex,
   StoreMap,
 }
@@ -38,6 +42,7 @@ export const components = {
   basic_copy: BasicCopy,
   basic_hero: BasicHero,
   bespoke: Bespoke,
+  bookingform: BookingForm,
   gallery_array: GalleryArray,
   gallery_index: GalleryIndex,
   image_array: ImageArray,
@@ -46,6 +51,7 @@ export const components = {
   image_wall: ImageWall,
   landing_hero: LandingHero,
   large_image_array: LargeImageArray,
+  little_large_image: LittleLargeImage,
   post_index: PostIndex,
   store_map: StoreMap,
 }

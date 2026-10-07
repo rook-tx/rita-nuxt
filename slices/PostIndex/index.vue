@@ -76,7 +76,7 @@
 
 <script>
 import dayjs from 'dayjs'
-import { asText } from '@prismicio/client'
+import { asText, filter } from '@prismicio/client'
 
 // import parallax from '../mixins/parallax'
 
@@ -131,13 +131,15 @@ export default {
   },
 
   created() {
-    // .query(this.$prismic.Predicates.at('document.type', 'post'), {
-    //   orderings: '[my.post.date desc]',
-    //   pageSize: 50,
-    // })
-    this.$prismic.client.getByType('post').then((res) => {
-      this.extract(res.results)
-    })
+    this.$prismic.client
+      .get({
+        filters: [filter.at('document.type', 'post')],
+        orderings: [{ field: 'my.post.date', direction: 'desc' }],
+        pageSize: 50,
+      })
+      .then((res) => {
+        this.extract(res.results)
+      })
   },
 
   methods: {

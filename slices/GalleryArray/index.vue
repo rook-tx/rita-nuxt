@@ -1,17 +1,11 @@
 <template>
-  <div :class="[ 'gallery-array', `layout-${layout}` ]">
+  <div :class="['gallery-array', `layout-${layout}`]">
     <div class="wrap">
       <div class="copy">
-        <prismic-rich-text
-          :field="slice.primary.copy"
-        />
+        <prismic-rich-text :field="slice.primary.copy" />
       </div>
 
-      <div
-        v-for="(im, idx) in images"
-        :key="idx"
-        class="image"
-      >
+      <div v-for="(im, idx) in slice.items" :key="idx" class="image">
         <button
           type="button"
           aria-label="Open image gallery"
@@ -27,23 +21,12 @@
           />
         </button>
 
-        <div
-          class="caption"
-        >
-          <prismic-rich-text
-            v-if="im.caption"
-            :field="im.caption"
-          />
+        <div class="caption">
+          <prismic-rich-text v-if="im.caption" :field="im.caption" />
 
-          <prismic-rich-text
-            v-if="im.season"
-            :field="im.season"
-          />
+          <prismic-rich-text v-if="im.season" :field="im.season" />
 
-          <prismic-rich-text
-            v-if="im.collection"
-            :field="im.collection"
-          />
+          <prismic-rich-text v-if="im.collection" :field="im.collection" />
         </div>
       </div>
     </div>
@@ -59,16 +42,15 @@
 </template>
 
 <script>
+import { getSliceComponentProps } from '@prismicio/vue'
 
-import { getSliceComponentProps } from '@prismicio/vue';
-
-import PlaxImage from '~~/components/modules/PlaxImage.vue'
+import PlaxImage from '@/components/modules/PlaxImage.vue'
 
 export default {
   props: getSliceComponentProps(['slice', 'index', 'slices', 'context']),
 
   components: {
-    PlaxImage
+    PlaxImage,
   },
 
   data() {
@@ -78,11 +60,10 @@ export default {
       layout: 'left',
       galleryIdx: 0,
       zooming: -1,
-      galleries: []
-    };
+      galleries: [],
+    }
   },
 }
-
 </script>
 
 <style lang="stylus">
@@ -240,6 +221,4 @@ export default {
     }
   }
 }
-
 </style>
-  

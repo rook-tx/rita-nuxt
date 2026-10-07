@@ -97,6 +97,7 @@ export default defineNuxtConfig({
     endpoint: 'rita-vinieris',
     preview: false,
     toolbar: false,
+    linkResolver: '@/prismic/linkResolver',
   },
 
   vite: {
