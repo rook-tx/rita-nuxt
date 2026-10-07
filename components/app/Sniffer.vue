@@ -10,8 +10,8 @@ const deviceStore = useDeviceStore()
 
 const device = reactive({
   win: {
-    x: 500,
-    y: 800,
+    x: 1440,
+    y: 900,
   },
   mouse: false,
   portrait: false,
