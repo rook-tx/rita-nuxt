@@ -12,7 +12,7 @@
           :scroll="scroll"
           :inview="inview"
           :p-top="elTop" -->
-          <modules-plax-image :img-obj="im.image" />
+          <modules-plax-image :img-obj="im.image" v-if="hasImage(im)" />
         </button>
 
         <div class="caption">
@@ -36,7 +36,7 @@
 
 <script>
 import { getSliceComponentProps } from '@prismicio/vue'
-import { asText } from '@prismicio/client'
+import { asText, isFilled } from '@prismicio/client'
 
 // import parallax from '../mixins/parallax.js'
 
@@ -119,6 +119,10 @@ export default {
   },
 
   methods: {
+    hasImage(item) {
+      return item.image && isFilled.image(item.image)
+    },
+
     mapItems(items) {
       if (items && items.length && items[0].image && items[0].image.url) {
         this.images = items.map((item) => {

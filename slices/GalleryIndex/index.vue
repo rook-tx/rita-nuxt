@@ -114,7 +114,7 @@ const content = computed(() => galleries.value[galleryIdx.value] || null)
           :scroll="scroll"
           :inview="inview"
           :p-top="elTop" -->
-            <modules-plax-image :img-obj="im.image" />
+            <modules-plax-image :img-obj="im.image" :alt-obj="im.alt_image" />
           </button>
 
           <div v-if="im.caption" class="caption"><prismic-rich-text :field="im.caption" /></div>

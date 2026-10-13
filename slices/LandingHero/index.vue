@@ -1,10 +1,7 @@
 <template>
   <div class="landing-hero headline-center">
     <div class="image">
-      <modules-plax-image
-        :inview="true"
-        :img-obj="slice.primary.image"
-      />
+      <modules-plax-image :inview="true" :img-obj="slice.primary.image" />
     </div>
 
     <div class="headline">
@@ -14,35 +11,33 @@
 </template>
 
 <script>
-
-import { getSliceComponentProps } from '@prismicio/vue'
 import { mapState } from 'pinia'
-import { useDeviceStore } from '~~/stores/device'
+import { getSliceComponentProps } from '@prismicio/vue'
+import { useDeviceStore } from '@/stores/device'
 
 export default {
-
   props: {
-    ...getSliceComponentProps([ 'slice', 'index' ]),
+    ...getSliceComponentProps(['slice', 'index']),
 
     header: {
       type: Object,
-      default: null
+      default: null,
     },
 
     data: {
       type: Object,
-      default: null
+      default: null,
     },
 
     items: {
       type: Array,
-      default: null
+      default: null,
     },
 
     scroll: {
       type: Number,
-      default: 0
-    }
+      default: 0,
+    },
   },
 
   data() {
@@ -58,15 +53,12 @@ export default {
       deltaY: 0.2,
       // minusY: -window.innerHeight * 0.2,
       minusY: -100,
-      inview: true
+      inview: true,
     }
   },
 
   computed: {
-    ...mapState(useDeviceStore, [
-      'win',
-      'mobile'
-    ]),
+    ...mapState(useDeviceStore, ['win', 'mobile']),
 
     plax() {
       return this.lastScroll / this.travel
@@ -82,28 +74,29 @@ export default {
 
     yFactor() {
       return this.minusY + this.deltaY * this.invertFactor
-    }
+    },
   },
 
   watch: {
     win: {
       handler() {
         this.$nextTick(this.updateDims)
-      }
+      },
     },
 
     data: {
       immediate: true,
       handler(data) {
         if (data) {
-          this.src = data.image && data.image.url && this.mobile ?
-            data.image.Mobile.url :
-            data.image && data.image.url && !this.mobile ?
-              data.image.url : this.src
-          this.obj = this.mobile ?
-            data.image.Mobile : data.image
+          this.src =
+            data.image && data.image.url && this.mobile
+              ? data.image.Mobile.url
+              : data.image && data.image.url && !this.mobile
+                ? data.image.url
+                : this.src
+          this.obj = this.mobile ? data.image.Mobile : data.image
         }
-      }
+      },
     },
 
     invertFactor: {
@@ -113,15 +106,15 @@ export default {
         } else if (oldFactor === 1 && factor < 1) {
           this.$root.$emit('hideLogo')
         }
-      }
+      },
     },
 
     scroll: {
       immediate: true,
       handler(e) {
         this.onscroll(e)
-      }
-    }
+      },
+    },
   },
 
   mounted() {
@@ -162,7 +155,7 @@ export default {
       } else {
         this.lastScroll = this.travel
       }
-    }
+    },
 
     // render() {
     //   if (!this.rendering) { return; }
@@ -175,10 +168,8 @@ export default {
 
     //   requestAnimationFrame(this.render);
     // }
-  }
-
+  },
 }
-
 </script>
 
 <style lang="stylus">
@@ -270,5 +261,4 @@ export default {
     }
   }
 }
-
 </style>

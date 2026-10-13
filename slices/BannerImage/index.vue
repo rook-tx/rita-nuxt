@@ -3,22 +3,14 @@
     :class="[
       'banner-image',
       {
-        'headline-center': layout && layout === 'centre'
-      }
+        'headline-center': layout && layout === 'centre',
+      },
     ]"
   >
-    <ModulesPlaxImage
-      :img-obj="slice.primary.image"
-    />
+    <ModulesPlaxImage :img-obj="slice.primary.image" />
 
-    <div
-      class="headline"
-      :style="{ height: `${padding}px` }"
-    >
-      <div
-        v-if="wordmark"
-        class="scale-wordmark"
-      >
+    <div class="headline" :style="{ height: `${padding}px` }">
+      <div v-if="wordmark" class="scale-wordmark">
         <!-- <img
           ref="scaleImage"
           :alt="headline"
@@ -26,32 +18,41 @@
         > -->
         <prismic-image :field="slice.primary.wordmark" />
       </div>
+
+      <span
+        v-else
+        ref="scaleHeadline"
+        class="scale-headline"
+        :style="{
+          transform: renderTransform,
+        }"
+        v-html="headline"
+      />
+      <h1 ref="headline" v-html="headline" />
     </div>
   </div>
 </template>
 
 <script>
-
 import { getSliceComponentProps } from '@prismicio/vue'
 import { mapState } from 'pinia'
-import { useDeviceStore } from '~~/stores/device'
+import { useDeviceStore } from '@/stores/device'
+import { asText } from '@prismicio/client'
 
 export default {
   props: {
-    ...getSliceComponentProps([ 'slice', 'index' ]),
+    ...getSliceComponentProps(['slice', 'index']),
   },
 
   data() {
     return {
       scale: 2,
-      padding: 50
+      padding: 50,
     }
   },
 
   computed: {
-    ...mapState(useDeviceStore, [
-      'winWidth'
-    ]),
+    ...mapState(useDeviceStore, ['win', 'winWidth']),
 
     layout() {
       return this.slice?.primary?.layout?.toLowerCase()
@@ -62,8 +63,12 @@ export default {
     },
 
     headline() {
-      return this.$prismic.asText(this.slice.primary.headline)
-    }
+      return asText(this.slice.primary.headline)
+    },
+
+    renderTransform() {
+      return `translateY(-50%) scale(${this.scale * 1.018}) translateX(-0.4%)`
+    },
   },
 
   watch: {
@@ -71,25 +76,25 @@ export default {
       immediate: true,
       handler() {
         this.updateScale()
-      }
-    }
+      },
+    },
+  },
+
+  mounted() {
+    this.updateScale()
   },
 
   methods: {
-
     updateScale() {
-      this.scale = this.$refs.headline ?
-        (this.win.x - (this.win.x < 768 ? 40 : 80)) / this.$refs.headline.clientWidth
+      this.scale = this.$refs.headline
+        ? (this.win.x - (this.win.x < 768 ? 40 : 80)) / this.$refs.headline.clientWidth
         : 2
-      this.padding = this.$refs.scaleImage ?
-        this.$refs.scaleImage.clientHeight / 2 :
-        this.$refs.scaleHeadline ?
-          this.$refs.scaleHeadline.clientHeight * this.scale / 2
-          : 50
-    }
-  }
+      this.padding = this.$refs.scaleHeadline
+        ? (this.$refs.scaleHeadline.clientHeight * this.scale) / 2
+        : 50
+    },
+  },
 }
-
 </script>
 
 <style lang="stylus">
@@ -189,5 +194,4 @@ export default {
     }
   }
 }
-
 </style>

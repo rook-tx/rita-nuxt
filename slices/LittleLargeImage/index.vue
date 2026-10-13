@@ -71,6 +71,7 @@ export default {
       right: false,
       imageUrl: null,
       littleUrl: null,
+      inview: false,
       inviewLetters: false,
       hardHover: false,
       route: '#',

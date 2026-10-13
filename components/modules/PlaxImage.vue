@@ -1,15 +1,20 @@
 <template>
   <div class="plax-image">
     <div class="plax-in">
-      <!-- <div
+      <div
         ref="im"
         class="plax-spacer"
         :style="{
-          paddingBottom: `${ar * 100}%`
+          paddingBottom: `${ar * 100}%`,
         }"
       />
 
-      <transition
+      <div class="plax-im">
+        <prismic-image :field="imgObj" loading="lazy" class="img" />
+        <prismic-image :field="altObj" loading="lazy" class="alt-hover" />
+      </div>
+
+      <!-- <transition
         appear
       >
         <div
@@ -33,8 +38,6 @@
           >
         </div>
       </transition> -->
-
-      <prismic-image :field="imgObj" loading="lazy" />
     </div>
   </div>
 </template>
@@ -45,6 +48,10 @@ import { useDeviceStore } from '@/stores/device'
 
 export default {
   props: {
+    altObj: {
+      type: Object,
+      default: null,
+    },
     scroll: {
       type: Number,
       default: 0,
