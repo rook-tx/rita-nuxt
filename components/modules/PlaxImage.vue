@@ -1,5 +1,66 @@
+<script setup>
+import { computed, onMounted, ref, watch } from 'vue'
+import { storeToRefs } from 'pinia'
+import { motion, useScroll, useMotionValueEvent } from 'motion-v'
+import { useDeviceStore } from '@/stores/device'
+
+const props = defineProps({
+  altObj: {
+    type: Object,
+    default: null,
+  },
+  imgObj: {
+    type: Object,
+    default: null,
+  },
+})
+
+const deviceStore = useDeviceStore()
+const { mobile, winHeight } = storeToRefs(deviceStore)
+
+const root = ref(null)
+const im = ref(null)
+const ar = ref(1000 / 800)
+const scale = ref(1.01)
+const delta = ref(0.5)
+const elHeight = ref(0)
+
+const inplax = computed(() => (delta.value - 0.5) * (mobile.value ? 12 : 18))
+
+watch(
+  () => props.imgObj,
+  (obj) => {
+    if (obj?.dimensions) {
+      ar.value = obj.dimensions.height / obj.dimensions.width
+    }
+  },
+  { immediate: true },
+)
+
+const { scrollYProgress } = useScroll({
+  target: im,
+  offset: ['start end', 'end start'],
+})
+
+useMotionValueEvent(scrollYProgress, 'change', (latest) => {
+  delta.value = latest
+})
+
+onMounted(updateDims)
+
+function updateDims() {
+  if (!root.value) return
+
+  elHeight.value = root.value.clientHeight
+
+  scale.value =
+    (mobile.value ? 1 : 1.02) +
+    Math.max(0, (((winHeight.value - elHeight.value) / winHeight.value) * 20) / 100)
+}
+</script>
+
 <template>
-  <div class="plax-image">
+  <div ref="root" class="plax-image">
     <div class="plax-in">
       <div
         ref="im"
@@ -9,10 +70,17 @@
         }"
       />
 
-      <div class="plax-im">
-        <prismic-image :field="imgObj" loading="lazy" class="img" />
-        <prismic-image :field="altObj" loading="lazy" class="alt-hover" />
-      </div>
+      <transition appear>
+        <motion.div
+          class="plax-im"
+          :style="{
+            transform: `scale(${scale}) translateY(${inplax}%) translateZ(0)`,
+          }"
+        >
+          <prismic-image :field="imgObj" loading="lazy" class="img" />
+          <prismic-image :field="altObj" loading="lazy" class="alt-hover" />
+        </motion.div>
+      </transition>
 
       <!-- <transition
         appear
@@ -41,184 +109,6 @@
     </div>
   </div>
 </template>
-
-<script>
-import { mapState } from 'pinia'
-import { useDeviceStore } from '@/stores/device'
-
-export default {
-  props: {
-    altObj: {
-      type: Object,
-      default: null,
-    },
-    scroll: {
-      type: Number,
-      default: 0,
-    },
-
-    pTop: {
-      type: Number,
-      // default: window.innerHeight
-      default: 900,
-    },
-
-    imgObj: {
-      type: Object,
-      default: null,
-    },
-
-    src: {
-      type: String,
-      default: null,
-    },
-
-    alt: {
-      type: String,
-      default: null,
-    },
-
-    inview: {
-      type: Boolean,
-      default: false,
-    },
-
-    parent: {
-      type: Boolean,
-      default: false,
-    },
-  },
-
-  data() {
-    return {
-      ar: 1000 / 800,
-      ready: false,
-      scale: 1.01,
-      rinview: false,
-      // ininview: false,
-      uncompressSrc: null,
-      uncompressAlt: null,
-      // elTop: window.innerHeight * 2,
-      // top: window.innerHeight * 2,
-      // elHeight: window.innerHeight,
-      // bottom: window.innerHeight * 2,
-      // elEnd: window.innerHeight * 3,
-      // travel: window.innerHeight,
-      // lastScroll: Number(0),
-      delta: 0.5,
-      // showAlt: false,
-      dimQuery: null,
-    }
-  },
-
-  computed: {
-    ...mapState(useDeviceStore, ['mobile']),
-    // ...mapGetters([
-    //   'win',
-    //   'winHeight',
-    //   'winWidth',
-    //   'canTouch',
-    //   'mobile',
-    //   'nano'
-    // ]),
-
-    inplax() {
-      return (this.delta - 0.5) * (this.mobile ? 12 : 18)
-    },
-  },
-
-  watch: {
-    pTop: {
-      handler() {
-        this.updateDims()
-      },
-    },
-
-    inview: {
-      handler() {
-        this.updateDims()
-      },
-    },
-
-    // scroll: {
-    //   handler(top) {
-    //     this.diffScroll(top);
-    //   }
-    // },
-
-    dimQuery: {
-      handler() {
-        if (this.src) {
-          this.uncompressSrc = this.uncompress(this.src)
-        }
-
-        if (this.alt) {
-          this.uncompressAlt = this.uncompress(this.alt)
-        }
-      },
-    },
-
-    imgObj: {
-      immediate: true,
-      handler(obj) {
-        if (obj && obj.dimensions) {
-          this.ar = obj.dimensions.height / obj.dimensions.width
-        }
-      },
-    },
-  },
-
-  methods: {
-    uncompress(src) {
-      const compsrc = src.replace('auto=compress,format', 'auto=compress,format&q=70&cs=srgb')
-      const qidx = compsrc.indexOf('&w=')
-      if (this.dimQuery && qidx > 0) {
-        return (
-          compsrc.substring(0, qidx) + this.dimQuery + (this.nanoIm && this.nano ? '&dpr=2' : '')
-        )
-      }
-      return compsrc
-    },
-
-    updateDims() {
-      this.elTop =
-        (this.parent
-          ? this.$el.parentNode.offsetTop + this.$el.offsetParent.offsetTop
-          : this.$el.offsetTop) + this.pTop
-      this.top = this.elTop - this.winHeight / 4
-      this.elHeight = this.$el.clientHeight
-      this.elEnd = this.elTop + this.elHeight + this.winHeight
-      this.bottom = this.elEnd + this.winHeight / 3
-
-      this.scale =
-        (this.mobile ? 1 : 1.02) +
-        Math.max(0, (((this.winHeight - this.elHeight) / this.winHeight) * 20) / 100)
-
-      this.travel = this.winHeight + this.elHeight
-
-      if (this.$refs.im && this.$refs.im.clientWidth > 0) {
-        this.dimQuery = `&w=${Math.round(this.$refs.im.clientWidth * this.scale)}`
-        this.nanoIm = this.$refs.im.clientWidth < this.winWidth / 2
-      }
-
-      this.$nextTick(this.diffScroll(this.scroll))
-    },
-
-    diffScroll(scroll) {
-      this.rinview = this.top < scroll && this.bottom > scroll
-
-      if (this.rinview) {
-        this.delta = (scroll - this.elTop) / this.travel
-      }
-    },
-
-    onload(e) {
-      this.ar = e.target.naturalHeight / e.target.naturalWidth
-      this.ready = true
-    },
-  },
-}
-</script>
 
 <style lang="stylus">
 

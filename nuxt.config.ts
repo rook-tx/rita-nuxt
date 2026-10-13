@@ -91,7 +91,7 @@ export default defineNuxtConfig({
     },
   },
 
-  modules: ['@pinia/nuxt', '@nuxtjs/prismic'],
+  modules: ['@pinia/nuxt', '@nuxtjs/prismic', 'motion-v/nuxt'],
 
   prismic: {
     endpoint: 'rita-vinieris',
