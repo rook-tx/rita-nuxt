@@ -4,14 +4,23 @@ export const useUiStore = defineStore('ui', {
   state: () => ({
     galleryOpen: false,
     scrollMarks: [],
+    logoShown: true,
+    logoDims: { x: 280, y: 72 },
   }),
 
-  // getters: {
-  //   galleryOpen: (state) => state.galleryOpen,
-  //   scrollMarks: (state) => state.scrollMarks
-  // },
-
   actions: {
+    showLogo() {
+      this.logoShown = true
+    },
+
+    hideLogo() {
+      this.logoShown = false
+    },
+
+    setLogoDims({ x, y }) {
+      this.logoDims = { x, y }
+    },
+
     toggleGallery(open) {
       this.galleryOpen = open
     },

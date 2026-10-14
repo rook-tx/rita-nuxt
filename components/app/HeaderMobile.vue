@@ -5,7 +5,7 @@
     </div>
 
     <div class="header-bar">
-      <div :class="['lockup-badge', show || drawerOpen ? 'show' : 'hide']">
+      <div :class="['lockup-badge', logoShown || drawerOpen ? 'show' : 'hide']">
         <div class="home">
           <nuxt-link to="/" title="Home">
             <lockup ref="lockup" focusable="false" />

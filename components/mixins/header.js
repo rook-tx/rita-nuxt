@@ -1,6 +1,7 @@
 import { mapState, mapActions } from 'pinia'
-import { useDeviceStore } from '~~/stores/device'
-import { useSearchStore } from '~~/stores/search'
+import { useDeviceStore } from '@/stores/device'
+import { useSearchStore } from '@/stores/search'
+import { useUiStore } from '@/stores/ui'
 
 import Lockup from '../svg/Lockup.vue'
 import SearchBar from '../modules/SearchBar.vue'
@@ -28,14 +29,15 @@ export default {
 
   computed: {
     ...mapState(useDeviceStore, ['win']),
+    ...mapState(useUiStore, ['logoShown', 'logoDims']),
     ...mapState(useSearchStore, ['searchOpen']),
   },
 
   watch: {
     win: {
-      immediate: true,
+      // immediate: true,
       handler() {
-        this.$nextTick(this.logoDims)
+        this.$nextTick(this.goLogoDims)
       },
     },
   },
@@ -48,6 +50,7 @@ export default {
   },
 
   mounted() {
+    this.goLogoDims()
     // this.$root.$on('hideLogo', this.hideLogo);
     // this.$root.$on('showLogo', () => { this.show = true; });
   },
@@ -59,14 +62,19 @@ export default {
 
   methods: {
     ...mapActions(useSearchStore, ['toggleSearch']),
+    ...mapActions(useUiStore, ['showLogo', 'hideLogo', 'setLogoDims']),
 
-    hideLogo() {
-      this.show = false
-      this.logoDims()
-    },
+    // hideLogo() {
+    //   this.show = false
+    //   this.goLogoDims()
+    // },
 
-    logoDims() {
+    goLogoDims() {
       console.log('logoDim')
+      this.setLogoDims({
+        y: this.$refs.lockup.$el.clientHeight / 2 + 30,
+        x: this.$refs.lockup.$el.clientWidth,
+      })
       // this.$root.$emit('logoDim', {
       //   y: this.$refs.lockup.$el.clientHeight / 2 + 30,
       //   x: this.$refs.lockup.$el.clientWidth

@@ -25,8 +25,6 @@ const scale = ref(1.01)
 const delta = ref(0.5)
 const elHeight = ref(0)
 
-const inplax = computed(() => (delta.value - 0.5) * (mobile.value ? 12 : 18))
-
 watch(
   () => props.imgObj,
   (obj) => {
@@ -37,17 +35,6 @@ watch(
   { immediate: true },
 )
 
-const { scrollYProgress } = useScroll({
-  target: im,
-  offset: ['start end', 'end start'],
-})
-
-useMotionValueEvent(scrollYProgress, 'change', (latest) => {
-  delta.value = latest
-})
-
-onMounted(updateDims)
-
 function updateDims() {
   if (!root.value) return
 
@@ -57,6 +44,19 @@ function updateDims() {
     (mobile.value ? 1 : 1.02) +
     Math.max(0, (((winHeight.value - elHeight.value) / winHeight.value) * 20) / 100)
 }
+
+const { scrollYProgress } = useScroll({
+  target: im,
+  offset: ['start end', 'end start'],
+})
+
+useMotionValueEvent(scrollYProgress, 'change', (latest) => {
+  delta.value = latest
+})
+
+const inplax = computed(() => (delta.value - 0.5) * (mobile.value ? 12 : 18))
+
+onMounted(updateDims)
 </script>
 
 <template>

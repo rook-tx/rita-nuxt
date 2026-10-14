@@ -1,43 +1,31 @@
 <template>
   <div class="landing-hero headline-center">
     <div class="image">
-      <modules-plax-image :inview="true" :img-obj="slice.primary.image" />
+      <modules-plax-image :img-obj="slice.primary.image" />
     </div>
 
     <div class="headline">
-      <svg-lockup />
+      <motion.div
+        :class="['scale-wordmark', invertFactor < 1 ? 'show' : 'hide']"
+        :style="{
+          transform: `translateY(${yFactor}px) translateZ(0) scale(${factor})`,
+        }"
+      >
+        <svg-lockup ref="lockup" />
+      </motion.div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapState } from 'pinia'
+import { motion, useScroll, useMotionValueEvent } from 'motion-v'
+import { mapActions, mapState } from 'pinia'
 import { getSliceComponentProps } from '@prismicio/vue'
 import { useDeviceStore } from '@/stores/device'
 
 export default {
   props: {
     ...getSliceComponentProps(['slice', 'index']),
-
-    header: {
-      type: Object,
-      default: null,
-    },
-
-    data: {
-      type: Object,
-      default: null,
-    },
-
-    items: {
-      type: Array,
-      default: null,
-    },
-
-    scroll: {
-      type: Number,
-      default: 0,
-    },
   },
 
   data() {
@@ -54,15 +42,16 @@ export default {
       // minusY: -window.innerHeight * 0.2,
       minusY: -100,
       inview: true,
+      scroll: 0,
+      plax: 0,
+      logoX: 280,
+      logoY: 83.72,
     }
   },
 
   computed: {
     ...mapState(useDeviceStore, ['win', 'mobile']),
-
-    plax() {
-      return this.lastScroll / this.travel
-    },
+    ...mapState(useUiStore, ['logoShown', 'logoDims']),
 
     invertFactor() {
       return Math.min(1, this.plax)
@@ -102,27 +91,20 @@ export default {
     invertFactor: {
       handler(factor, oldFactor) {
         if (factor === 1) {
-          this.$root.$emit('showLogo')
+          this.showLogo()
         } else if (oldFactor === 1 && factor < 1) {
-          this.$root.$emit('hideLogo')
+          this.hideLogo()
         }
-      },
-    },
-
-    scroll: {
-      immediate: true,
-      handler(e) {
-        this.onscroll(e)
       },
     },
   },
 
   mounted() {
+    this.hideLogo()
     // this.$root.$on('logoDim', this.updateLogoDims);
     // this.$root.$emit('hideLogo');
 
-    setTimeout(this.updateDims, 600)
-    setTimeout(this.updateDims, 1200)
+    this.updateDims()
   },
 
   beforeUnmount() {
@@ -131,6 +113,7 @@ export default {
   },
 
   methods: {
+    ...mapActions(useUiStore, ['showLogo', 'hideLogo']),
     updateLogoDims(e) {
       this.logoY = e.y
       this.logoX = e.x
@@ -141,33 +124,20 @@ export default {
       if (this.$el && this.$refs.lockup) {
         this.elHeight = this.$el.clientHeight
         this.travel = this.elHeight
-        this.delta = this.logoX / this.$refs.lockup.$el.clientWidth
+        this.delta = this.logoDims.x / this.$refs.lockup.$el.clientWidth
         this.minusY = this.$refs.lockup.$el.clientHeight / -2
-        this.deltaY = this.logoY + this.elHeight / 2
+        this.deltaY = this.logoDims.y + this.elHeight / 2
+
+        const { scrollYProgress } = useScroll({
+          target: this.$el,
+          offset: ['start start', 'end start'],
+        })
+
+        useMotionValueEvent(scrollYProgress, 'change', (latest) => {
+          this.plax = latest
+        })
       }
     },
-
-    onscroll(e) {
-      this.inview = e < this.elHeight * 1.1
-
-      if (this.inview) {
-        this.lastScroll = e
-      } else {
-        this.lastScroll = this.travel
-      }
-    },
-
-    // render() {
-    //   if (!this.rendering) { return; }
-
-    //   const diff = this.lastScroll - this.rscroll;
-
-    //   if (Math.abs(diff) > 1 / 12) {
-    //     this.rscroll += diff / 4;
-    //   }
-
-    //   requestAnimationFrame(this.render);
-    // }
   },
 }
 </script>

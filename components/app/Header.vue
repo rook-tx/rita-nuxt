@@ -40,7 +40,7 @@
             </li>
           </div>
 
-          <div :class="['lockup-badge', show ? 'show' : 'hide']">
+          <div :class="['lockup-badge', logoShown ? 'show' : 'hide']">
             <li class="home">
               <nuxt-link to="/" title="Home" @click.left="navClick()">
                 <lockup ref="lockup" focusable="false" />
