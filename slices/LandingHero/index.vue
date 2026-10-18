@@ -1,5 +1,76 @@
+<script setup>
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
+import { motion, useScroll, useMotionValueEvent } from 'motion-v'
+import { getSliceComponentProps } from '@prismicio/vue'
+import { useDeviceStore } from '@/stores/device'
+
+defineProps({
+  ...getSliceComponentProps(['slice', 'index']),
+})
+
+const el = ref(null)
+const lockupRef = ref(null)
+const delta = ref(0.2)
+const deltaY = ref(0.2)
+const minusY = ref(-100)
+const plax = ref(0)
+
+const deviceStore = useDeviceStore()
+const { win } = storeToRefs(deviceStore)
+
+const uiStore = useUiStore()
+const { logoDims } = storeToRefs(uiStore)
+const { showLogo, hideLogo } = uiStore
+
+const invertFactor = computed(() => {
+  return Math.min(1, plax.value)
+})
+
+const factor = computed(() => {
+  return 1 - (1 - delta.value) * invertFactor.value
+})
+
+const yFactor = computed(() => {
+  return minusY.value + deltaY.value * invertFactor.value
+})
+
+watch(win, () => {
+  nextTick(updateDims)
+})
+
+watch(invertFactor, (factor, oldFactor) => {
+  if (factor === 1) {
+    showLogo()
+  } else if (oldFactor === 1 && factor < 1) {
+    hideLogo()
+  }
+})
+
+onMounted(() => {
+  hideLogo()
+  updateDims()
+})
+
+const { scrollYProgress } = useScroll({
+  target: el,
+  offset: ['start start', 'end start'],
+})
+
+useMotionValueEvent(scrollYProgress, 'change', (latest) => {
+  plax.value = latest
+})
+
+function updateDims() {
+  if (el.value && lockupRef.value) {
+    delta.value = logoDims.value.x / lockupRef.value.$el.clientWidth
+    minusY.value = lockupRef.value.$el.clientHeight / -2
+    deltaY.value = logoDims.value.y + el.value.clientHeight / 2
+  }
+}
+</script>
+
 <template>
-  <div class="landing-hero headline-center">
+  <div class="landing-hero headline-center" ref="el">
     <div class="image">
       <modules-plax-image :img-obj="slice.primary.image" />
     </div>
@@ -11,136 +82,11 @@
           transform: `translateY(${yFactor}px) translateZ(0) scale(${factor})`,
         }"
       >
-        <svg-lockup ref="lockup" />
+        <svg-lockup ref="lockupRef" />
       </motion.div>
     </div>
   </div>
 </template>
-
-<script>
-import { motion, useScroll, useMotionValueEvent } from 'motion-v'
-import { mapActions, mapState } from 'pinia'
-import { getSliceComponentProps } from '@prismicio/vue'
-import { useDeviceStore } from '@/stores/device'
-
-export default {
-  props: {
-    ...getSliceComponentProps(['slice', 'index']),
-  },
-
-  data() {
-    return {
-      src: null,
-      obj: {},
-      delta: 0.2,
-      lastScroll: Number(0),
-      // elHeight: window.innerHeight,
-      // travel: window.innerHeight,
-      elHeight: 800,
-      travel: 800,
-      deltaY: 0.2,
-      // minusY: -window.innerHeight * 0.2,
-      minusY: -100,
-      inview: true,
-      scroll: 0,
-      plax: 0,
-      logoX: 280,
-      logoY: 83.72,
-    }
-  },
-
-  computed: {
-    ...mapState(useDeviceStore, ['win', 'mobile']),
-    ...mapState(useUiStore, ['logoShown', 'logoDims']),
-
-    invertFactor() {
-      return Math.min(1, this.plax)
-    },
-
-    factor() {
-      return 1 - (1 - this.delta) * this.invertFactor
-    },
-
-    yFactor() {
-      return this.minusY + this.deltaY * this.invertFactor
-    },
-  },
-
-  watch: {
-    win: {
-      handler() {
-        this.$nextTick(this.updateDims)
-      },
-    },
-
-    data: {
-      immediate: true,
-      handler(data) {
-        if (data) {
-          this.src =
-            data.image && data.image.url && this.mobile
-              ? data.image.Mobile.url
-              : data.image && data.image.url && !this.mobile
-                ? data.image.url
-                : this.src
-          this.obj = this.mobile ? data.image.Mobile : data.image
-        }
-      },
-    },
-
-    invertFactor: {
-      handler(factor, oldFactor) {
-        if (factor === 1) {
-          this.showLogo()
-        } else if (oldFactor === 1 && factor < 1) {
-          this.hideLogo()
-        }
-      },
-    },
-  },
-
-  mounted() {
-    this.hideLogo()
-    // this.$root.$on('logoDim', this.updateLogoDims);
-    // this.$root.$emit('hideLogo');
-
-    this.updateDims()
-  },
-
-  beforeUnmount() {
-    // this.$root.$off('logoDim', this.updateLogoDims);
-    // this.$root.$emit('showLogo');
-  },
-
-  methods: {
-    ...mapActions(useUiStore, ['showLogo', 'hideLogo']),
-    updateLogoDims(e) {
-      this.logoY = e.y
-      this.logoX = e.x
-      this.updateDims()
-    },
-
-    updateDims() {
-      if (this.$el && this.$refs.lockup) {
-        this.elHeight = this.$el.clientHeight
-        this.travel = this.elHeight
-        this.delta = this.logoDims.x / this.$refs.lockup.$el.clientWidth
-        this.minusY = this.$refs.lockup.$el.clientHeight / -2
-        this.deltaY = this.logoDims.y + this.elHeight / 2
-
-        const { scrollYProgress } = useScroll({
-          target: this.$el,
-          offset: ['start start', 'end start'],
-        })
-
-        useMotionValueEvent(scrollYProgress, 'change', (latest) => {
-          this.plax = latest
-        })
-      }
-    },
-  },
-}
-</script>
 
 <style lang="stylus">
 
