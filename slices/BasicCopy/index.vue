@@ -2,9 +2,8 @@
 import { getSliceComponentProps } from '@prismicio/vue'
 
 defineProps({
-  ...getSliceComponentProps([ 'slice' ])
+  ...getSliceComponentProps(['slice']),
 })
-
 </script>
 
 <template>
@@ -55,5 +54,4 @@ defineProps({
     }
   }
 }
-
 </style>

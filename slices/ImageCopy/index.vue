@@ -9,6 +9,8 @@ const props = defineProps({
 const layout = isFilled.keyText(props.slice.primary.layout)
   ? props.slice.primary.layout.toLowerCase().replace(/\s/g, '-')
   : 'image-left'
+
+const signature = layout === 'image-right'
 </script>
 
 <template>
@@ -25,15 +27,9 @@ const layout = isFilled.keyText(props.slice.primary.layout)
       :p-top="elTop" -->
         <modules-plax-image :img-obj="slice.primary.image" />
 
-        <!-- <div
-          v-if="signature"
-          class="signature"
-        >
-          <img
-            src="/static/sig.svg"
-            alt="Rita Vinieris signature"
-          >
-        </div> -->
+        <div v-if="signature" class="signature">
+          <img src="/static/sig.svg" alt="Rita Vinieris signature" width="284" height="308" />
+        </div>
       </div>
 
       <div class="copy">
