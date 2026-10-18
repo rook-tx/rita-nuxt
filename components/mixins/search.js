@@ -51,7 +51,7 @@ export default {
       searchTerm: null,
       lastSearch: null,
       results: [],
-      galleryIdx: 0,
+      galleryIdx: -1,
       galleries: [],
       scroll: 0,
     }
@@ -206,10 +206,11 @@ export default {
       }
     },
 
-    openGallery(id, e) {
+    openGallery(id, idx, e) {
       const top = e.target.offsetTop + this.$el.offsetTop - this.scroll
 
-      this.galleryIdx = this.galleries.findIndex((g) => g.id === id)
+      // this.galleryIdx = this.galleries.findIndex((g) => g.id === id)
+      this.galleryIdx = idx
       this.$nextTick(this.$refs.overlay.setScale(e, top))
     },
 

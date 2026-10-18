@@ -8,19 +8,19 @@ defineProps({
   ...getSliceComponentProps(['slice', 'index']),
 })
 
-const el = ref(null)
-const lockupRef = ref(null)
-const delta = ref(0.2)
-const deltaY = ref(0.2)
-const minusY = ref(-100)
-const plax = ref(0)
-
 const deviceStore = useDeviceStore()
 const { win } = storeToRefs(deviceStore)
 
 const uiStore = useUiStore()
 const { logoDims } = storeToRefs(uiStore)
 const { showLogo, hideLogo } = uiStore
+
+const el = ref(null)
+const lockupRef = ref(null)
+const delta = ref(0.2)
+const deltaY = ref(0.2)
+const minusY = ref(-100)
+const plax = ref(0)
 
 const invertFactor = computed(() => {
   return Math.min(1, plax.value)

@@ -2,8 +2,8 @@
   <div class="search-item">
     <button
       type="button"
-      :aria-label="`Open ${result.name} image gallery`"
-      :title="`Open ${result.name} image gallery`"
+      :aria-label="`Open ${result.item.name} image gallery`"
+      :title="`Open ${result.item.name} image gallery`"
       @click.left="openGallery"
     >
       <div class="result-image">
@@ -11,72 +11,68 @@
           <img
             v-if="inview"
             v-show="ready"
-            :src="uncompress(result.image.url)"
-            :alt="`Model wears ${result.name} dress`"
+            :src="uncompress(result.item.image.url)"
+            :alt="`Model wears ${result.item.name} dress`"
             :width="resultWidth"
             :height="resultHeight"
             @load="setReady"
-          >
+          />
+          <!-- <modules-plax-image :img-obj="result.item.image" /> -->
         </transition>
       </div>
     </button>
-    <span class="result-name">{{ result.name }}</span>
-    <span class="result-season">{{ result.parent }}</span>
+    <span class="result-name">{{ result.item.name }}</span>
+    <span class="result-season">{{ result.item.parent }}</span>
   </div>
 </template>
 
 <script>
-
-import { mapState } from 'pinia';
-import { useDeviceStore } from '../../stores/device';
+import { mapState } from 'pinia'
+import { useDeviceStore } from '@/stores/device'
 
 export default {
-
   props: {
     result: {
       type: Object,
       default: () => ({
         id: null,
         name: null,
-        parent: null
-      })
+        parent: null,
+      }),
     },
 
     scroll: {
       type: Number,
-      default: 0
+      default: 0,
     },
 
     resultWidth: {
       type: Number,
       // default: window.innerWidth / 5
-      default: 288
+      default: 288,
     },
 
     resultHeight: {
       type: Number,
       // default: window.innerWidth / 5 * 6 / 4
-      default: 288
-    }
+      default: 288,
+    },
   },
 
   data() {
     return {
       inview: false,
       ready: false,
-      top: 0
-    };
+      top: 0,
+    }
   },
 
   computed: {
-    ...mapState(useDeviceStore, [
-      'win',
-      'mobile'
-    ]),
+    ...mapState(useDeviceStore, ['win', 'mobile']),
 
     dimQuery() {
-      return `&w=${this.resultWidth}&ar=4:6&fit=crop`;
-    }
+      return `&w=${this.resultWidth}&ar=4:6&fit=crop`
+    },
   },
 
   watch: {
@@ -84,50 +80,46 @@ export default {
       immediate: true,
       handler() {
         this.$nextTick(() => {
-          this.top = this.$el.offsetTop - this.win.y;
-          this.inview = this.top < 0;
-        });
-      }
+          this.top = this.$el.offsetTop - this.win.y
+          this.inview = this.top < 0
+        })
+      },
     },
 
     dimQuery: {
       handler() {
-        this.ready = false;
-      }
+        this.ready = false
+      },
     },
 
     scroll: {
       handler(top) {
         if (!this.inview) {
-          this.inview = top > this.top;
+          this.inview = top > this.top
         }
-      }
-    }
+      },
+    },
   },
 
   methods: {
     setReady() {
-      this.ready = true;
+      this.ready = true
     },
 
     uncompress(src) {
-      const compsrc = src.replace('auto=compress,format', 'auto=compress,format&cs=srgb');
-      const qidx = compsrc.indexOf('&w=');
+      const compsrc = src.replace('auto=compress,format', 'auto=compress,format&cs=srgb')
+      const qidx = compsrc.indexOf('&w=')
       if (this.dimQuery && qidx > 0) {
-        return compsrc.substring(0, qidx) + this.dimQuery + (this.mobile ? '&dpr=2' : '');
+        return compsrc.substring(0, qidx) + this.dimQuery + (this.mobile ? '&dpr=2' : '')
       }
-      return compsrc;
+      return compsrc
     },
 
     openGallery(e) {
-      this.$emit('openGallery', e);
-    }
-
-
-  }
-
-};
-
+      this.$emit('openGallery', e)
+    },
+  },
+}
 </script>
 
 <style lang="stylus">
@@ -185,5 +177,4 @@ export default {
     background lighten($black, 1%)
   }
 }
-
 </style>

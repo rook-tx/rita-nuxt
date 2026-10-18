@@ -24,13 +24,13 @@
 
       <div class="results-wrap">
         <ol class="search-results">
-          <li v-for="(result, idx) in results" :key="result.id + idx" class="search-result">
+          <li v-for="(result, idx) in results" :key="result.item.id + idx" class="search-result">
             <search-item
               :scroll="scroll"
               :result="result"
               :result-width="resultWidth"
               :result-height="resultHeight"
-              @openGallery="openGallery(result.id, $event)"
+              @openGallery="openGallery(result.item.id, result.refIndex, $event)"
             />
           </li>
         </ol>
