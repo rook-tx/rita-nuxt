@@ -2,86 +2,30 @@
 import { getSliceComponentProps } from '@prismicio/vue'
 
 defineProps({
-  ...getSliceComponentProps([ 'slice' ])
+  ...getSliceComponentProps(['slice']),
 })
-
 </script>
 
 <template>
   <div class="image-index">
     <div class="wrap">
-      <div
-        v-for="(im, idx) in slice.items"
-        :key="idx"
-        class="image"
-      >
+      <div v-for="(im, idx) in slice.items" :key="idx" class="image">
         <div class="content">
-          <modules-plax-image
-            :img-obj="im.image"
-          />
-          <!-- :src="im.src"
-          :scroll="scroll"
-          :inview="inview"
-          :p-top="elTop" -->
+          <modules-plax-image :img-obj="im.image" />
           <div class="caption">
-            <prismic-rich-text
-              v-if="im.caption"
-              :field="im.caption"
-            />
+            <prismic-rich-text v-if="im.caption" :field="im.caption" />
             <p>
-              <nuxt-link to="/book">
-                Book an appointment
-              </nuxt-link>
+              <nuxt-link to="/book">Book an appointment</nuxt-link>
             </p>
           </div>
         </div>
       </div>
     </div>
-    <div
-      v-if="slice.copy"
-      class="copy"
-    >
-      <prismic-rich-text :field="slice.copy" />
+    <div v-if="slice.primary.copy" class="copy">
+      <prismic-rich-text :field="slice.primary.copy" />
     </div>
   </div>
 </template>
-
-<!-- <script>
-
-import cmsProps from '../mixins/cms-props.js';
-import parallax from '../mixins/parallax.js';
-
-export default {
-
-  mixins: [
-    cmsProps,
-    parallax
-  ],
-
-  data() {
-    const subject = 'Rita Vinieris Trunk Show Appointment Request';
-    const body = `Hi,
-
-My name is ____________. My wedding date is___________.
-
-I would like to book an appointment for the Rita Vinieris Trunk Show { INSERT brand }, on { INSERT date and time }.
-
-I am interested in the following { INSERT dress name, style, silhouette, fabric }.
-
-{ INSERT any other comments or questions }
-
-To confirm my appointment contact me at { INSERT e-mail } or { INSERT phone number }.`;
-
-    return {
-      images: [],
-      mailLink: 'mailto:concierge@ritavinieris.com?' +
-        `subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
-    };
-  }
-
-};
-
-</script> -->
 
 <style lang="stylus">
 
@@ -223,5 +167,4 @@ To confirm my appointment contact me at { INSERT e-mail } or { INSERT phone numb
     }
   }
 }
-
 </style>

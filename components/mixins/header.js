@@ -51,13 +51,6 @@ export default {
 
   mounted() {
     this.goLogoDims()
-    // this.$root.$on('hideLogo', this.hideLogo);
-    // this.$root.$on('showLogo', () => { this.show = true; });
-  },
-
-  beforeDestroy() {
-    // this.$root.$off('hideLogo', this.hideLogo);
-    // this.$root.$off('showLogo', () => { this.show = true; });
   },
 
   methods: {
@@ -70,15 +63,10 @@ export default {
     // },
 
     goLogoDims() {
-      console.log('logoDim')
       this.setLogoDims({
         y: this.$refs.lockup.$el.clientHeight / 2 + 30,
         x: this.$refs.lockup.$el.clientWidth,
       })
-      // this.$root.$emit('logoDim', {
-      //   y: this.$refs.lockup.$el.clientHeight / 2 + 30,
-      //   x: this.$refs.lockup.$el.clientWidth
-      // });
     },
 
     mapPris(links) {

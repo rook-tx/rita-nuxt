@@ -1,9 +1,15 @@
 <script setup>
+import { onMounted } from 'vue'
+import { useUiStore } from '@/stores/ui'
 import { components } from '../slices/index'
 const { client } = usePrismic()
 const uid = useRoute().params.uid ? String(useRoute().params.uid) : 'home'
-console.log(uid)
 const { data: page } = await useAsyncData(uid, () => client.getByUID('page', uid))
+const uiStore = useUiStore()
+const { setLightUi } = uiStore
+onMounted(() => {
+  setLightUi(uid !== 'bespoke')
+})
 </script>
 
 <template>

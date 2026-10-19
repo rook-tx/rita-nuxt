@@ -1,5 +1,5 @@
 <template>
-  <div id="bespoke" class="bespoke">
+  <div id="bespoke" class="bespoke" ref="bespokeEl">
     <div class="wrap">
       <div class="headline">
         <h2>Bespoke</h2>
@@ -7,12 +7,6 @@
 
       <div v-for="(im, idx) in slice.items" :key="idx" class="image">
         <div class="content">
-          <!-- :src="im.src"
-          :scroll="scroll"
-          :inview="inview"
-          :p-top="elTop"
-          :parent="true"
-          -->
           <modules-plax-image :img-obj="im.image" />
           <prismic-rich-text v-if="im.caption" class="caption" :field="im.caption" />
         </div>
@@ -27,15 +21,11 @@
 
 <script>
 import { mapActions } from 'pinia'
-
 import { getSliceComponentProps } from '@prismicio/vue'
+import { useInView } from 'motion-v'
 import { useUiStore } from '@/stores/ui'
-// import cmsProps from '../mixins/cms-props.js'
-// import parallax from '../mixins/parallax.js'
 
 export default {
-  // mixins: [cmsProps, parallax],
-
   props: {
     ...getSliceComponentProps(['slice']),
   },
@@ -43,6 +33,7 @@ export default {
   data() {
     return {
       lightUi: true,
+      inview: false,
     }
   },
 
@@ -64,29 +55,30 @@ export default {
     lightUi: {
       immediate: true,
       handler(ui) {
-        this.$root.$emit('ui', ui)
+        console.log('lightUi changed', ui)
+        this.setLightUi(ui)
+      },
+    },
+
+    inview: {
+      handler(inview) {
+        console.log('inview changed', inview)
+        this.setLightUi(!inview)
       },
     },
   },
 
   mounted() {
-    setTimeout(() => {
-      this.addScrollMark({
-        slug: 'bespoke',
-        scroll: this.$el.offsetTop,
-      })
-    }, 650)
+    this.inview = useInView(this.$refs.bespokeEl)
   },
 
-  beforeDestroy() {
-    this.$root.$emit('ui', true)
-    this.removeScrollMark({
-      slug: 'bespoke',
-    })
+  beforeUnmount() {
+    console.log('beforeUnmount', true)
+    this.setLightUi(true)
   },
 
   methods: {
-    ...mapActions(useUiStore, ['addScrollMark', 'removeScrollMark']),
+    ...mapActions(useUiStore, ['setLightUi']),
 
     diffScroll(scroll) {
       this.inview = this.elTop < scroll && this.elEnd > scroll
