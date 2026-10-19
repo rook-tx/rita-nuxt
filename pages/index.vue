@@ -2,6 +2,11 @@
 import { components } from '../slices/index'
 const { client } = usePrismic()
 const { data: page } = await useLazyAsyncData('home', () => client.getByUID('page', 'home'))
+const uiStore = useUiStore()
+const { setLightUi } = uiStore
+onMounted(() => {
+  setLightUi(true)
+})
 </script>
 
 <template>

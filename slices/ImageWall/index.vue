@@ -87,6 +87,7 @@ const images = props.slice.items.map((item) => {
 .image-wall {
   position relative
   pad(4, 0)
+  overflow hidden
 
   +above($tablet) {
     pad(7, 1)

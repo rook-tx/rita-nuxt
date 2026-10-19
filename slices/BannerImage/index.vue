@@ -7,15 +7,10 @@
       },
     ]"
   >
-    <ModulesPlaxImage :img-obj="slice.primary.image" />
+    <modules-plax-image :img-obj="slice.primary.image" />
 
     <div class="headline" :style="{ height: `${padding}px` }">
       <div v-if="wordmark" class="scale-wordmark">
-        <!-- <img
-          ref="scaleImage"
-          :alt="headline"
-          :src="wordmark"
-        > -->
         <prismic-image :field="slice.primary.wordmark" />
       </div>
 

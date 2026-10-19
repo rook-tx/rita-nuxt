@@ -66,7 +66,7 @@
 
         <div v-if="mobile" class="copy-row">
           <div class="copy">
-            <span class="body2">&copy; 2021 Rita Vinieris</span>
+            <span class="body2">&copy; 1995&ndash;2026 Rita Vinieris</span>
           </div>
 
           <div class="terms">

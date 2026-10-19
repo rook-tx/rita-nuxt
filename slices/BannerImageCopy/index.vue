@@ -1,26 +1,66 @@
+<script setup>
+import { getSliceComponentProps } from '@prismicio/vue'
+
+defineProps({
+  ...getSliceComponentProps(['slice']),
+})
+
+const headline = 'Make an Entrance'
+const headlineEl = ref(null)
+const scaleHeadline = ref(null)
+const scale = ref(2)
+const padding = ref(50)
+
+const deviceStore = useDeviceStore()
+const { win } = storeToRefs(deviceStore)
+
+function updateScale() {
+  scale.value = headlineEl.value
+    ? (win.value.x > 768 ? (win.value.x - 80) * 0.8 : win.value.x - 40) /
+      headlineEl.value.clientWidth
+    : 2
+  padding.value = scaleHeadline.value ? (scaleHeadline.value.clientHeight * scale.value) / 2 : 50
+}
+
+watch(win, updateScale)
+
+onMounted(() => {
+  updateScale()
+})
+</script>
+
 <template>
   <div class="banner-image-copy">
-    <modules-plax-image 
-      :img-obj="slice.primary.image"
-    />
+    <modules-plax-image :img-obj="slice.primary.image" />
 
     <div class="copy">
       <div class="wrap">
         <div class="eight-ten-col">
-          <div class="headline">
-            <prismic-rich-text
-            :field="slice.primary.headline" />
+          <div
+            class="headline"
+            :style="{
+              height: `${padding}px`,
+            }"
+          >
+            <span
+              ref="scaleHeadline"
+              class="scale-headline"
+              :style="{
+                transform: `translateY(-50%) scale(${scale})`,
+              }"
+              v-html="headline"
+            />
+
+            <h2 ref="headlineEl" v-html="headline" />
           </div>
 
           <div class="t">
-            <p>Visit our store locator for a complete list of Rita Vinieris stores and&nbsp;retailers.</p>
             <p>
-              <router-link
-                to="/find-store"
-                class="label cta"
-              >
-                Find a store
-              </router-link>
+              Visit our store locator for a complete list of Rita Vinieris stores
+              and&nbsp;retailers.
+            </p>
+            <p>
+              <router-link to="/find-store" class="label cta"> Find a store </router-link>
             </p>
           </div>
         </div>
@@ -28,17 +68,6 @@
     </div>
   </div>
 </template>
-
-<script>
-
-import { getSliceComponentProps } from '@prismicio/vue';
-
-export default {
-  props: {
-    ...getSliceComponentProps([ 'slice' ])
-  }
-} 
-</script>
 
 <style lang="stylus">
 
@@ -145,6 +174,4 @@ export default {
     underline()
   }
 }
-
 </style>
-  
