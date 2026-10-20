@@ -18,7 +18,6 @@
       <div class="image" @mouseover="mouseOverLink" @mouseout="mouseOutLink">
         <nuxt-link :to="route">
           <modules-plax-image :img-obj="slice.primary.image" />
-          <!-- :src="imageUrl" :scroll="scroll" :inview="inview" :p-top="elTop" /> -->
         </nuxt-link>
       </div>
 
@@ -35,7 +34,6 @@
       <div class="image" @mouseover="mouseOverLink" @mouseout="mouseOutLink">
         <nuxt-link :to="route">
           <modules-plax-image :img-obj="slice.primary.little_image" />
-          <!-- :src="littleUrl" :scroll="scroll" :inview="inview" :p-top="elTop" /> -->
         </nuxt-link>
       </div>
     </div>
@@ -49,9 +47,6 @@
 </template>
 
 <script>
-// import cmsProps from '../mixins/cms-props.js'
-// import parallax from '../mixins/parallax.js'
-
 import LetterRoll from '@/components/modules/LetterRoll.vue'
 import { asText } from '@prismicio/client'
 
@@ -59,8 +54,6 @@ export default {
   components: {
     LetterRoll,
   },
-
-  // mixins: [cmsProps, parallax],
 
   props: {
     ...getSliceComponentProps(['slice']),
@@ -103,9 +96,7 @@ export default {
   },
 
   mounted() {
-    setTimeout(() => {
-      this.findLink()
-    }, 2000)
+    this.findLink()
   },
 
   beforeDestroy() {
@@ -120,8 +111,6 @@ export default {
       this.screens = Math.floor(scroll / this.winHeight)
       this.inview = this.elTop < scroll && this.elEnd > scroll
       this.inviewLetters = this.top < scroll && this.bottom > scroll
-      // this.dir = scroll > this.lastScroll;
-      // this.lastScroll = scroll;
     },
 
     findLink() {

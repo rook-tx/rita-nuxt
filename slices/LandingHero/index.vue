@@ -46,11 +46,6 @@ watch(invertFactor, (factor, oldFactor) => {
   }
 })
 
-onMounted(() => {
-  hideLogo()
-  updateDims()
-})
-
 const { scrollYProgress } = useScroll({
   target: el,
   offset: ['start start', 'end start'],
@@ -67,6 +62,15 @@ function updateDims() {
     deltaY.value = logoDims.value.y + el.value.clientHeight / 2
   }
 }
+
+onMounted(() => {
+  hideLogo()
+  updateDims()
+})
+
+onBeforeUnmount(() => {
+  showLogo()
+})
 </script>
 
 <template>
