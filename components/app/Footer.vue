@@ -1,3 +1,90 @@
+<script setup>
+import { storeToRefs } from 'pinia'
+import { useDeviceStore } from '@/stores/device'
+const deviceStore = useDeviceStore()
+const { mobile } = storeToRefs(deviceStore)
+
+const collectionLinks = [
+  {
+    route: '/',
+    name: 'Collections',
+    class: 'header-link',
+  },
+  {
+    route: '/rivini',
+    name: 'Rivini',
+  },
+  {
+    route: '/alyne',
+    name: 'Alyne',
+  },
+  {
+    route: '/veils',
+    name: 'Veils',
+  },
+  {
+    route: '/about#bespoke',
+    name: 'Bespoke',
+  },
+]
+
+const exploreLinks = [
+  {
+    route: '/about',
+    name: 'Explore',
+    class: 'header-link',
+  },
+  {
+    route: '/about',
+    name: 'About Rita',
+  },
+  {
+    route: '/the-feature',
+    name: 'News & Events',
+  },
+  {
+    route: '/find-store',
+    name: 'Find a Store',
+  },
+  {
+    route: '/find-store#trunk-shows',
+    name: 'Trunk Shows',
+  },
+]
+
+const helpLinks = [
+  {
+    route: '#',
+    name: 'Help',
+    class: 'header-link',
+  },
+  {
+    route: 'mailto:concierge@ritavinieris.com',
+    name: 'concierge@ritavinieris.com',
+  },
+]
+
+const followLinks = [
+  {
+    route: '#',
+    name: 'Follow',
+    class: 'header-link',
+  },
+  {
+    route: 'https://www.instagram.com/ritavinieris/',
+    name: 'Instagram',
+  },
+  {
+    route: 'https://www.twitter.com/RitaVinieris',
+    name: 'Twitter',
+  },
+  {
+    route: 'https://www.facebook.com/ritavineris/',
+    name: 'Facebook',
+  },
+]
+</script>
+
 <template>
   <div class="footer">
     <div class="content">
@@ -152,111 +239,6 @@
     </div>
   </div>
 </template>
-
-<script>
-import { mapState } from 'pinia'
-import { useDeviceStore } from '@/stores/device'
-
-export default {
-  data() {
-    const collectionLinks = [
-      {
-        route: '/',
-        name: 'Collections',
-        class: 'header-link',
-      },
-      {
-        route: '/rivini',
-        name: 'Rivini',
-      },
-      {
-        route: '/alyne',
-        name: 'Alyne',
-      },
-      {
-        route: '/veils',
-        name: 'Veils',
-      },
-      {
-        route: '/about#bespoke',
-        name: 'Bespoke',
-      },
-    ]
-
-    const exploreLinks = [
-      {
-        route: '/about',
-        name: 'Explore',
-        class: 'header-link',
-      },
-      {
-        route: '/about',
-        name: 'About Rita',
-      },
-      {
-        route: '/the-feature',
-        name: 'News & Events',
-      },
-      {
-        route: '/find-store',
-        name: 'Find a Store',
-      },
-      {
-        route: '/find-store#trunk-shows',
-        name: 'Trunk Shows',
-      },
-    ]
-
-    const helpLinks = [
-      {
-        route: '#',
-        name: 'Help',
-        class: 'header-link',
-      },
-      // {
-      //   route: 'tel:18001234567',
-      //   name: '1 (800) 123 4567'
-      // },
-      {
-        route: 'mailto:concierge@ritavinieris.com',
-        name: 'concierge@ritavinieris.com',
-      },
-    ]
-
-    const followLinks = [
-      {
-        route: '#',
-        name: 'Follow',
-        class: 'header-link',
-      },
-      {
-        route: 'https://www.instagram.com/ritavinieris/',
-        name: 'Instagram',
-      },
-      {
-        route: 'https://www.twitter.com/RitaVinieris',
-        name: 'Twitter',
-      },
-      {
-        route: 'https://www.facebook.com/ritavineris/',
-        name: 'Facebook',
-      },
-    ]
-
-    return {
-      collectionLinks,
-      exploreLinks,
-      helpLinks,
-      followLinks,
-      email: null,
-    }
-  },
-
-  computed: {
-    ...mapState(useDeviceStore, ['mobile']),
-  },
-}
-</script>
 
 <style lang="stylus">
 

@@ -72,7 +72,7 @@ function updateDims() {
 <template>
   <div class="landing-hero headline-center" ref="el">
     <div class="image">
-      <modules-plax-image :img-obj="slice.primary.image" />
+      <modules-plax-image :img-obj="slice.primary.image" loading="eager" />
     </div>
 
     <div class="headline">

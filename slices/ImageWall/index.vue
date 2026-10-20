@@ -2,78 +2,35 @@
 import { getSliceComponentProps } from '@prismicio/vue'
 
 const props = defineProps({
-  ...getSliceComponentProps([ 'slice' ])
+  ...getSliceComponentProps(['slice']),
 })
 
 const headline = 'XO, RV'
-// const images = ref([
-//   {
-//     src: '/static/165561437_157999846191594_7886655846105885825_n.jpeg',
-//     link: 'https://www.instagram.com/p/CM-e0F3BP7E/'
-//   },
-//   {
-//     src: '/static/166028319_351244912927764_4625079148904741742_n.jpeg',
-//     link: 'https://www.instagram.com/p/CM77vkEBE5R/'
-//   },
-//   {
-//     src: '/static/164172445_2830734467184427_7377712215125392104_n.jpeg',
-//     link: 'https://www.instagram.com/p/CM41XiUhd_G/'
-//   },
-//   {
-//     src: '/static/164063578_434021494340706_1738656028806787556_n.jpeg',
-//     link: 'https://www.instagram.com/p/CM2W67UBewh/'
-//   }
-// ])
 
 const images = props.slice.items.map((item) => {
   return {
     src: item.post.url,
     obj: item.post,
-    link: item.link.url ? item.link.url : 'https://www.instagram.com/ritavinieris'
+    link: item.link.url ? item.link.url : 'https://www.instagram.com/ritavinieris',
   }
 })
-
 </script>
 
 <template>
   <div class="image-wall">
     <div class="wrap">
       <div class="headline">
-        <h2
-          class="display1"
-          v-html="headline"
-        />
+        <h2 class="display1" v-html="headline" />
         <h3 class="label">
-          <a
-            href="https://www.instagram.com/ritavinieris/"
-            target="_blank"
-            rel="noopener"
-          >
+          <a href="https://www.instagram.com/ritavinieris/" target="_blank" rel="noopener">
             Follow us
           </a>
         </h3>
       </div>
-      <div
-        v-for="(im, idx) in images"
-        :key="idx"
-        class="image"
-      >
-        <a
-          :href="im.link"
-          rel="noopener"
-          target="_blank"
-        >
-          <modules-plax-image
-            :img-obj="im.obj"
-          />
-          <!-- :src="im.src"
-          :scroll="scroll"
-          :p-top="elTop"
-          :inview="inview"
-          :parent="true" -->
-          <span
-            class="caption"
-          >@ritavineris</span>
+      <div v-for="(im, idx) in images" :key="idx" class="image">
+        <a :href="im.link" rel="noopener" target="_blank">
+          <modules-plax-image :img-obj="im.obj" />
+          <span class="caption">@ritavineris</span>
         </a>
       </div>
     </div>
@@ -202,5 +159,4 @@ const images = props.slice.items.map((item) => {
     extarrow()
   }
 }
-
 </style>

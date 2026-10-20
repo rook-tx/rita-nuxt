@@ -81,31 +81,6 @@ onMounted(updateDims)
           <prismic-image :field="altObj" loading="lazy" class="alt-hover" />
         </motion.div>
       </transition>
-
-      <!-- <transition
-        appear
-      >
-        <div
-          v-show="rinview && ready"
-          class="plax-im"
-          :style="{
-            transform: `scale(${scale}) translateY(${inplax}%) translateZ(0)`
-          }"
-        >
-          <img
-            class="img"
-            :src="uncompressSrc"
-            alt=""
-            @load.stop="onload"
-          >
-          <img
-            v-if="alt && !canTouch"
-            :src="uncompressAlt"
-            alt=""
-            class="alt-hover"
-          >
-        </div>
-      </transition> -->
     </div>
   </div>
 </template>

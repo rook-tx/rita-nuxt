@@ -14,9 +14,9 @@ defineProps({
           <modules-plax-image :img-obj="im.image" />
           <div class="caption">
             <prismic-rich-text v-if="im.caption" :field="im.caption" />
-            <p>
+            <!-- <p>
               <nuxt-link to="/book">Book an appointment</nuxt-link>
-            </p>
+            </p> -->
           </div>
         </div>
       </div>
